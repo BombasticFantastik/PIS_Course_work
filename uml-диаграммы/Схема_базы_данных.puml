@@ -1,0 +1,36 @@
+@startuml
+
+entity "Seller_items" {
+  * item_id : NUMBER
+  --
+  name : TEXT
+  price : VARCHAR
+}
+
+entity "admin_items" {
+  * item_id : NUMBER
+  --
+  name : TEXT
+  price : VARCHAR
+}
+
+entity "Seller" {
+  * seller_id : TEXT
+  --
+  INN : NUMBER
+  location : TEXT
+}
+
+entity "Admin_Orders" {
+  * order_id : int
+  --
+  seller_id : TEXT
+  admin_id : TEXT
+}
+
+
+
+User ||--o{ Order
+Order ||--o{ Product
+  
+@enduml

@@ -60,13 +60,30 @@ state seller as "Рабочий стол поставщика" {
   state seller_zayav as "Выбранная заявка" {
     seller_zayav: <img https://img.plantuml.biz/plantuml/png/VPBDIiD058NtUOe1zs9_H1SYVG_feg8xSM6pwnJI5Fp1Ggku4gpq1MGQ34tJ9Bx2kM_acHj4it4M0pFtdk-UkNTwmt1m4mu7Lw71Kc9yIGI713kaA94XDTZ0oPnNER9W51YkCpmZPM8fKubb9XEP6-H6nPLCK72F9PAf8R6YrFa0ahwgJyvFgNToZwm9zy7HdW-_CRlm9He9reS-9Detj9V9BIghi2NMyk3J39rCAIpWL4YHmwPEMk2J9bAPQ9cMnGiFCUCxRuD-3LPySo5FVDQZtC7PrW6NfTUAIPM_OaB2z-LQhDjLLBk1igt3VqKqcxCtSrgEU3mwLaR7ObKJPERBi-ri3ytoKXjDSBjsy-e7H5p90bk31Oy5vvIPZfB6THTrhqVrheGKMx8o7LF20ckTS_c3-Urosl_32SP1x_Bwmd-FRm00>
   }
-  state seller_accept_zayav as "Выбранная одобренная заяdка" {
+  state seller_accept_zayav as "Выбранная одобренная заявка" {
     seller_accept_zayav: <img https://img.plantuml.biz/plantuml/png/JLAzIWD14ExlAOPO2xaarudaAMmaHKGxiJ3fie7aJh0m41L141HihC-G8-ibjxx2p1lvpIn6hnXkPkVxcPtjZyR3w_5eU3acVfESlsN69QzuonKtxBaYtd0fIvHgziaa8Nod_CWL6Xif99U5p6L9N9E1WynvXvZBJ0e2Om2qr0DU3GnzT7RCptlEalW9P3bKj-n9aSJlKD_90mJkv1OjXmJ5W8QWAGvNKAcLWtezdBQ02Fp9tjo3JIsrJ6roe7glA6_KI1pAQUqU3dDajHIyTMRhmwOkO_9YYXwA5UXoe8CnmgzNUHiEWfWMt0tY5vrqkYxBqevBssaR8G8YK-2rtk4VJ2rXGjont5XfRJzgIEOkJTEkwxGpq6I9yLYOngainbtyNvlNVP0np6HXIoe7BlRKvg7vxTclLOh1F-PaclGlhixrHVm0>
   }
 
-  state seller_change_item as "Окно изменения товра" {
+  state seller_change_item as "Окно изменения товара" {
     seller_change_item: <img https://img.plantuml.biz/plantuml/png/LL2xRi904EplAqwYZcGRYIf2_4UKWeXqY2AuuomP0w51YjD5aIYIWjf2d6mCT_c5sL_8bx1tM3osc3tDpiokhZUE-s_nk3-C9NxmXugciAWbPTosA2XrNKo4v3gZgoSMMrhmj81XKqOhYGebZj1CQ4z-F2jlI3m-ldJn1KDpDgQiA-ZTQIJixJ9zNjHowZM7buvtQT1IuRVnMkODurvYvq-k9VBe0P_HvK8NiF6752hi1C5_PkvcEQMyja9DCnnK44Rjk_4tfnyuUWbDKnPkOLKOY4OZBf1Sdo8HlTVHmFtb2G00>
   }
+  seller_item_list-->seller_zayav_list
+  seller_zayav_list-->seller_item_list
+  
+  seller_item_list-->seller_add_form
+  seller_add_form-->seller_item_list
+
+  seller_item_list-->seller_change_item
+ 
+
+  seller_zayav_list-->seller_zayav
+  seller_zayav-->seller_zayav_list
+
+  seller_zayav-->seller_accept_zayav
+  seller_accept_zayav-->seller_zayav_list
+
+  
+  
 
 
 
