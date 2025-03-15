@@ -6,87 +6,47 @@ left to right direction
 [*] --> login
 
 state login as "Вход в систему" {
-  login : <img /home/artemybombastic/Рабочий стол/Курсовая работа: проектирование информационных систем/uml-диаграммы/Администратор/окно_регистрации_администратора.puml>
+  login : <img https://img.plantuml.biz/plantuml/png/VOun3e9044NxESM46m05sd4FGa6Y7R6GxSH4JBGMAXeumqOXheboXZytOlO2LfFy_rx-f9KfZgOgIiFev8O54z69cD5ZmC0OvO8NB7vmUCFANQ_ZceDm4oTXj4q23pymAJTByqT0YqKx9uskF64vHklbJ9KhlfXLiPpN6Je5FfgvdCv4wVwmym-k>
   
 }
 
-login --> [*] : Вход не выполнен
-login --> seller : Вход выполнен (Продавец)
-login --> owner : Вход выполнен (Владелец)
-login --> driver : Вход выполнен (Водитель)
-login --> customer : Вход выполнен (Покупатель)
 
-state seller as "Рабочий стол Продавца" {
-  state seller_item_list as "Список товаров" {
-    seller_item_list : <img https://www.plantuml.com/plantuml/png/VPB1IiD054Nt-Oe1zn8h1HSY_O_IHKLtui9cLmlJ28fK4CLLmLhHlKbiQ6XD-Wlt_O9VudsJANJH6iXxoRrtJYOlQVMYxbNKwrv41kzOeP0XAYoCn6mP4h7QWtvWU1oVdlmNqaX_pwLUaM2k5aeKoCsrKyUCniZnZKeiAOzUds2rHb6JMqPA9DwSqfWhHkvOjmJ632oTdSkGd0mLdNst7RpH_461cJwICYRgopqAmxkZtxZKVX3omlMGjTqnU9OHKh6wONceKLz8iTJt9bz9dsBb1Wi6HhgqMICQ7jKCpMxKaniCJxE5rF2amt3TTvC6hhRnWHaIDmKw7IzEaJkPO1hM3tWZy48fPI2hrsrypqum25hdbsVwOmH_>
-    
+login --> admin : Вход выполнен (Администратор магазина)
+login --> seller : Вход выполнен (Поставщик)
+
+
+state admin as "Рабочий стол администратора магазина" {
+  state admin_item_list as "Список товаров" {
+    admin_item_list: <img https://img.plantuml.biz/plantuml/png/JL8xJiDG4EnpYfLeGV87EeGGXw11AK3G8Gf8Hv12KW0AA7nI8CHNGhGOWsN7nkOAirVW11o1sMSNVfRUsklTsTdPNJteRUxt3ZPtUu8N_23JOrJ8HOSqCI8TcEqSTeIdlkriu5h7c34g4sH8XMbCvNU2Rnrt-njuOgAXvVBtDBqmpoiZ2ptNeGww3kd8tSjRAxXZfI4Y54pw57mXQJuJpEhISowEeAvAX5ZF29TBt_aVw4cDBqfwayPxgGDZY5n7A6hN6n5BHFscQiKIcPwmdA76g5mnFDeZUCUdZdH0D4oRNamNQlBDp9H05MQo7eHhmXZFztspllSxB9trf8PxONSJb89Rb2OH0KhUfxmBon0yarPAfYLoHD88cJivAjAhfSsSjz39l71IXf9GgL8dEX4dbSsBhtU1ln3uZa4Gq0GDeILF6a9NRh3KmOJXHDYPausKo477rd5hMi9-8mOLreNDNN13olSBlbK9myNGJ5Cbz5gpRM_CbCrysEIi4JrlhPWW5Z8mOPq8EkhsRSNuxzGMB7NwnKQolJYTeyxgpjwsBUy_>
   }
-  state seller_add_item as "Добавление товара" {
-    seller_add_item : <img https://www.plantuml.com/plantuml/png/NT2_JeOm50NmlK_HVDFdXfk3CJo62M70w6OSX0r8i2OQeucB4udeu0DKbD387r_Xt5VmIRobe2ZZwU_sNEh7INIUnD5f8l604Q_GgD6XmG23HfB2o86c0bgaGlAtVtImeeOKtQtOHF38PwqDvclSbyaDdXZsdBrZf6BZTCc3YYlVR0P3zmjFjpiIBrJG9JwuvrPcsqDEAjGiRs1oDr_XSrc0P-bgsbwxmhqlDSmrpqnQkn1TO_XB6Uvwlx9asKskeGjIjixcZdaE1QZuf7SNX3z_6Fn_cr3amZyvExPlBBu1>
-    
+
+  state admin_zayav_list as "Ваши заявки" {
+    admin_zayav_list: <img https://img.plantuml.biz/plantuml/png/TLB1Ji905Bpp5Pju9osLcp7yX-60qPln8Dme2RGN3KQY8Uf18No15MqeXS8lpFi5lyJPjn08qMwoJRSpy-RDsrgprRXfDHjNBOC9riYaXnLoWnaI6M1gFqhjak5pXYUaqaKXiKHoBpqP68lCYOoGO47ibyG6tuIvWnJpkd9Fpa__bxU0zf5YnbXHrvAdSeSCUQZ7GrV2A7l60WaAQWrsEZaoux0JYwJ1M7gRan4-AKOS-H9ZoPKeqrgtRtL069V1Xsr2kc6bMlQgvOhdLIc3TwI6tYAicG3TQNC5TK93YEVzH8LnCezum_C1UxXh2mlwPJuQNsZyeEfNI7RSYNPJ6BmovSYbpVsM--90SlI74pzmJhP64kKdx7bXvsL3OXkKooZV3tr_N_15nLYI_vqWJuFWEF2tYXtTtRXqTxTYh3uvQZhEz4PCfS_8kpgbWXERC-tDbD9wICg8qALMoUnLEc0m_eUzoKfSto_VATKkho_iZVq5>
   }
-  state seller_inventory_report as "Создать отчет по остаткам товара" {
-    seller_inventory_report : <img https://www.plantuml.com/plantuml/png/SoWkIImgAKxCAL6uiF32lWlRBsoviE72tWixBcnLkB3lOjF5zWjRBpPTsA1mOV-5VGeNjW35Me7AG8hsS5LpAG21JP8TGYjGHm-IHcpQm9ekJ06g1Pkx5yXe1uhl1dA0e4P1oTX0py1IpyZ0o4G9LItGX5r0l1Ue7kp6Y_rGvOO6oCgN06rhkB07f4a12e3ggZKq5G9St80i8CCvE0p4YD1KSAr8Jis120O7-jI2JOY-CEzY4z20hI37nS9DYCRfpLYkMYw7rBmKK3W20000>
-    
+  
+    state select_count as "Выберите количество" {
+    select_count: <img https://img.plantuml.biz/plantuml/png/SoWkIImgAKxCAL6uCEbYzuMD5xPURBYmusBJXQqA5tPTs7TXDv3J3XHi10fjkh2FgvfB0GZ0X8BIXKb0iQqNjk3HeAHG4trX2b1yuuKDG3vGuSMUMAvQBeVKl1IGjG00>
   }
-  state seller_edit_item as "Редактирование товара" {
-    seller_edit_item : <img https://www.plantuml.com/plantuml/png/RP11IWD144NtSuecgxYBEnSYEOOWMKHq9ovCTabWR54H1VS1nmWUO8XfqcYclSAhAtWIkom68zYx_hp_VrNrH-FXnNWqF1ix5WHMrBoB9qf9OabDGoGuyVRDSbrC2fVV_l71_nRnyh1b-85vecQz5MXlwZeyazWGMP6ax1WzrnG2RweHvR759zqTnwkKSgMTSk-ctSEiL2mpUKUScR_YinqWU-M6G4DjXNjVlh4Q5YJMEf3Sqln15Tpj_P9p4X_A4UHIlDQfRbZFe2CgyMmiOD1kcEKNabnBQRlhTGR5hEYVdf_etRy1>
-    
+  state correct_zayav as "Выбранная заявка" {
+    correct_zayav: <img https://img.plantuml.biz/plantuml/png/LL71IiD04BtdAnRyWQGbDv5-XPVIGqLlui7crYqaZQ2YK15FWbu4howr8R5jqbzuyqU-dJsqtOKXcNdlpPlPmIGRtsQJyNLcy2bpx2I7mn8RL6ZHe3AeuMJ1r1fDD8qCpn2lg0XifPIvF4iX2uFr8T9XErBewSMP8Th9WvQrL1if3NReI9pxRlB8JgpGWhy6F_YbTAuAqnDguCFpAEs2A-jpBvAJJwQKs5ZV2jzgsuMVTtISev5xclMTbkXK4MzC5ZJCNCSnjiJLf7NuC-UzlatJf6UJE8aP0Y4eTLZv9Unftb8hJroIt6bgfH_Ua1GsIPA-xSKfPT98TJJCmbGQmpA_gElKAPUfwdvGoGrdgu_sFxB3erSAZ3r2oj51ZsWM3QvkBltZ_WC0>
   }
-  seller_item_list --> seller_add_item
-  seller_item_list --> seller_edit_item
-  seller_add_item --> seller_item_list
-  seller_edit_item --> seller_item_list
+
+  admin_item_list-->admin_zayav_list
+  admin_zayav_list-->admin_item_list
+
+  admin_item_list-->select_count
+
+  admin_zayav_list-->correct_zayav
+  correct_zayav-->admin_zayav_list
+
+
+ 
 }
 
-state owner as "Рабочий стол Владельца" {
-  state owner_main as "Отчеты" {
-    owner_main : <img https://www.plantuml.com/plantuml/png/bOyn2i9044NxFSKUH2Jta1GHxSJ2f1F113HDxg3UO0m9H1FMAxovaJkWdOq3y-73l0UJv4MsA_9iKtYk27U2rWmyl9PQ4HWzBID2Hy-eZPuHjtS-pcmv_uCnOi65e2LJp4gFz34RZvNQYkT5i6uUYVj4cBn9QP58IFeHtRvNj0o_DHr1JmGwawJku9BrTcMllW40>
-    owner_main : Владелец имеет доступ к различным отчетам, включая остатки и доходы.
-  }
-  state owner_inventory_report as "Посмотреть отчет по остаткам товара" {
-    owner_inventory_report : Позволяет ознакомиться с текущим состоянием запасов.
-  }
-  state owner_income_report as "Создать отчет по доходам" {
-    owner_income_report : <img https://www.plantuml.com/plantuml/png/SoWkIImgAKxCAL6uiF32lWlRBsoviE72tWixBcnLkB3lOjF5zWjRBpPTsA1mOV-5VGeNjW35Me7AG8hsS5LpAG21JP8TGYjGHm-IHcpQm9ekJ06g1Pkx5yXe1uhl1dA0e4P1oTX0py1IpyZ0o4G9LItGX5r0l1Ue7kp6Y_rGvOO6oCgN06rhkB07f4a12e3ggZKq5G9St80i8CCvE0p4YD1KSAr8Jis120O7-jI2JOY-CEzY4z20hI37nS9DYCRfpLYkMYw7rBmKK3W20000>
-    owner_income_report : Генерация отчета с данными о доходах за определённый период.
-  }
-  owner_main --> owner_inventory_report
-  owner_main --> owner_income_report
-  owner_inventory_report --> owner_main
-  owner_income_report --> owner_main
+state seller as "Рабочий стол поставщика" {
+  
 }
 
-state driver as "Рабочий стол Водителя" {
-  state driver_main as "Окно перехода" {
-    driver_main : <img https://www.plantuml.com/plantuml/png/ZS_12G8n50JGUwhuXOXi7-9XHM_YmSrDX3M2NeGjGKk8eXWDnXPcEdBi81_29yERmsywtwvzrowzuOA8AmgFI7WPTmmeo8QRrXr9tmSo1xTnfXdDnjKDqqnmPY_tuS30ar5MCB8tMIb3KVOLYihVIDFA7lSC0bdlgVoWhUxMDOlL_7_P3m00>
-    driver_main : Доступ к задачам водителя, включая принятие товара для отправки и утилизации.
-  }
-  state driver_refill as "Принятие товара для отправки" {
-    driver_refill : <img https://www.plantuml.com/plantuml/png/dL6xIWD15EttAowfOX7OtMWdaiyGGeg8Tc9Xjek1E15iX6t4GiI0Np3eB0vvhBzmxY_u9PwPmKPJvHPxu3psdiiC9jNukfgCBol1KkVms6gjXjW8eSKxB6ahS5XhBMZ9VWM6oWe-csR2EJuxsIyk7Bpz6YNDZNIm9BU1XsDatac-Pt9hUBr7exTgc6cZ-IXF1bPOO8kL6Y5OV8PlS1EzrhHEkmU25qeVKMPT-RvxAgXqJtSf9PMTaVuiRNpa0WFxxx1GgypBmrwHz_f5gZV4AqsRMCUEw1Z6Arsyf67MiQNHXpy_qyKecsM3Ywlpy4m_>
-    driver_refill : Принятие товара для отправки: Водитель принимает товары для доставки.
-  }
-  state driver_dispose as "Принятие товара для утилизации" {
-    driver_dispose : <img https://www.plantuml.com/plantuml/png/dP4nJW9X48NxFSM42WiIG4jZE8O9eS1ePonaEoGHZDeOQIoCXIHUm17trmtWxnNUtCZtpu-TbPEG2VE-UVjcjpSgX-VbQ7XQ2XPsYHfVDhSPUn2sY2MKOnLKMDjSxCh5DN-VL6xOws9S26l_wE3_5iB2ooyikIwaWLUy4OrOeMvawed_k6ot23QbrHBHqMux0pa4PGQ1Ret6pHt1e_C1Ax4f6PeAtjagWj6rccZpaEWYHI4Jy44v44Zdu3jPYrspAMS-zoMtJpO8avpY0Kf3tUuGtK1ppEvUgzDkxNPot3wUoMtSImSa-lxmoYyBtArupCpk_dXlTZye9aNlvEmuVS0V>
-    driver_dispose : Водитель принимает товары для утилизации.
-  }
-  driver_main --> driver_refill
-  driver_main --> driver_dispose
-  driver_refill --> driver_main
-  driver_dispose --> driver_main
-}
 
-state customer as "Рабочий стол Покупателя" {
-  state customer_item_list as "Просмотр товаров" {
-    customer_item_list : <img https://www.plantuml.com/plantuml/png/XP0zIaGn58Nxjug0lVZJYim-P8eHxSJ2UTquC6OgiH0j1Hq4iJMEXebF4xVmtIsu4kyDDeBu0idDEUSxAJ8OjwEJTZmwQXttV9BaZ4BdnEjO4cHcivaqJjVE_kv_a26JjKhT4bXPH2OHtMbrRnJrH5ueMabo-UC_4fKBgjRh8omeV91uDL1jxbZgzPpaL6rkVFciSuzhHsS8An9PviDQvubdtYcM6S-3p6HE9rukL6xrrQy8PDlkZ_PsJtjgfwOBeaQHD_4a9N_1n64pRGQ7nmVsyzy0>
-    customer_item_list : Покупатель может просматривать каталог товаров с указанием розничных цен.
-    customer_item_list : Покупатель добавляет товары в корзину для оформления заказа.
-  }
-  state customer_shopping_cart as "Корзина товаров" {
-    customer_shopping_cart : <img https://www.plantuml.com/plantuml/png/VP91IiD068NtESLGTmKbRSILIEzHigZeJbpOx6eXHZTIGHGN8bWHnQsJj2LZskGCRwxWINppau2YTc3-oJpU-uP_9hrXD3Y9XeEZIE41bOsHmw24LZP1XGoQ4bTlv2cEtVszjJOnZJR4zmXDLyPQqhjGftLQCxB0J2Z6NjVw6pNo6XTXoqs6grfubdCCLeoTsSHUKT-Iq_24YhB1t14LTKnTq5x2k5t7_qnAhgsWnHhuBFrGuTPEaDeOsi44X7UaM19My5JXlDhOdgEWOy9jjm5r7MXx3UX6UkPKVt627voTVpdIzxtqFPDxu6WBa0jhcrDA9_35FvRQnmlcqEp4o3qXQy0eKVBxuzkRXNNaZa9AHrQ7VZkcza9URDLWSzeBpZpqnbxlyFZ0_KHV>
-  }
-  customer_item_list --> customer_shopping_cart
-  customer_shopping_cart --> customer_item_list
-}
 
 @enduml
