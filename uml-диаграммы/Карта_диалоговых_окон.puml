@@ -44,7 +44,33 @@ state admin as "Рабочий стол администратора магаз�
 }
 
 state seller as "Рабочий стол поставщика" {
-  
+
+    
+  state seller_item_list as "Список товаров" {
+    seller_item_list: <img https://img.plantuml.biz/plantuml/png/JLBDIiD04BxdAGQyMiYFtaIA3-55UgZeJJpOtaoXHb6XOaHxaAAW89xJQ4YQFrzXvXLy4h_Pf9WzxEpEpdpVDpFR7us7P-FHy6HC_Cu_dCa5rvoJ130nHp9LQvrRXDNikWxuKMQyGbH6d75AI4CgxWcNCXlu243ohJwdE8J0oZaR6829sNSETtc1fu0ZBa3oHVpDINjDUDKmRf1l8b_XJbKGL-1BMk-3J5K2vtB9HUFwH6x5aT_Yrm3Bv0R0AYxcsi3wn7DJQbCeYYmHcIAnvXNjkzwUnjYEuwXrxD-WCjQcDftu3Jmfg2lK5L5RUcuggS7ND2CptaB2JK9l4_0aABAIK48oLMg7SLouJizr38NhmhWjuxPDQqR-05aXTnB8b20tWde00mnp87w2e9UUenYUj-MfQJ4ykzFqxWIVeRyqtO9CkTCvLdBLTYEIQxZlYMlY61HBUBNtsg6o-piIdVKSroNUupMKXiL6sNzeT_ZMnEeVdnxfl_i3>
+  }
+
+  state seller_add_form as "Добавление товара" {
+    seller_add_form: <img https://img.plantuml.biz/plantuml/png/RL6xQiD04Epr5GVv0Fr0CFuFuKB6xeABM9qba4ucJc6m2Ib284MQrBBWi95Z-HTc_oYpal53pi7jShSpitDx_MaKFaVJy2ao-COHEybGep9YcKeKachsPfxXQgEk06zmh1qa5ojBoMHboC9HyPJuPRIIIjuH6iIDHDB4ns4F7vIO4voIKiWB-rEelcQvjlM3ehzGOAltE607PsBQKC-lt9PdNjy0pdwL_0EdzTZtEoosTVeItx_1h-dVKgMI7Fjxbfgxr3lSJzhV4xZWb3AYIjJ_A5Jtg9DEEw00xqHi-9fIARAycikWGRGXyVhZoKW_yGy0>
+  }
+
+  state seller_zayav_list as "Список заявок" {
+    seller_zayav_list: <img https://img.plantuml.biz/plantuml/png/VPBDIiD058NtUOe1zs9_H1SYVG_feg8xSM6pwnJI5Fp1Ggku4gpq1MGQ34tJ9Bx2kM_acHj4it4M0pFtdk-UkNTwmt1m4mu7Lw71Kc9yIGI713kaA94XDTZ0oPnNER9W51YkCpmZPM8fKubb9XEP6-H6nPLCK72F9PAf8R6YrFa0ahwgJyvFgNToZwm9zy7HdW-_CRlm9He9reS-9Detj9V9BIghi2NMyk3J39rCAIpWL4YHmwPEMk2J9bAPQ9cMnGiFCUCxRuD-3LPySo5FVDQZtC7PrW6NfTUAIPM_OaB2z-LQhDjLLBk1igt3VqKqcxCtSrgEU3mwLaR7ObKJPERBi-ri3ytoKXjDSBjsy-e7H5p90bk31Oy5vvIPZfB6THTrhqVrheGKMx8o7LF20ckTS_c3-Urosl_32SP1x_Bwmd-FRm00>
+  }
+  state seller_zayav as "Выбранная заявка" {
+    seller_zayav: <img https://img.plantuml.biz/plantuml/png/VPBDIiD058NtUOe1zs9_H1SYVG_feg8xSM6pwnJI5Fp1Ggku4gpq1MGQ34tJ9Bx2kM_acHj4it4M0pFtdk-UkNTwmt1m4mu7Lw71Kc9yIGI713kaA94XDTZ0oPnNER9W51YkCpmZPM8fKubb9XEP6-H6nPLCK72F9PAf8R6YrFa0ahwgJyvFgNToZwm9zy7HdW-_CRlm9He9reS-9Detj9V9BIghi2NMyk3J39rCAIpWL4YHmwPEMk2J9bAPQ9cMnGiFCUCxRuD-3LPySo5FVDQZtC7PrW6NfTUAIPM_OaB2z-LQhDjLLBk1igt3VqKqcxCtSrgEU3mwLaR7ObKJPERBi-ri3ytoKXjDSBjsy-e7H5p90bk31Oy5vvIPZfB6THTrhqVrheGKMx8o7LF20ckTS_c3-Urosl_32SP1x_Bwmd-FRm00>
+  }
+  state seller_accept_zayav as "Выбранная одобренная заяdка" {
+    seller_accept_zayav: <img https://img.plantuml.biz/plantuml/png/JLAzIWD14ExlAOPO2xaarudaAMmaHKGxiJ3fie7aJh0m41L141HihC-G8-ibjxx2p1lvpIn6hnXkPkVxcPtjZyR3w_5eU3acVfESlsN69QzuonKtxBaYtd0fIvHgziaa8Nod_CWL6Xif99U5p6L9N9E1WynvXvZBJ0e2Om2qr0DU3GnzT7RCptlEalW9P3bKj-n9aSJlKD_90mJkv1OjXmJ5W8QWAGvNKAcLWtezdBQ02Fp9tjo3JIsrJ6roe7glA6_KI1pAQUqU3dDajHIyTMRhmwOkO_9YYXwA5UXoe8CnmgzNUHiEWfWMt0tY5vrqkYxBqevBssaR8G8YK-2rtk4VJ2rXGjont5XfRJzgIEOkJTEkwxGpq6I9yLYOngainbtyNvlNVP0np6HXIoe7BlRKvg7vxTclLOh1F-PaclGlhixrHVm0>
+  }
+
+  state seller_change_item as "Окно изменения товра" {
+    seller_change_item: <img https://img.plantuml.biz/plantuml/png/LL2xRi904EplAqwYZcGRYIf2_4UKWeXqY2AuuomP0w51YjD5aIYIWjf2d6mCT_c5sL_8bx1tM3osc3tDpiokhZUE-s_nk3-C9NxmXugciAWbPTosA2XrNKo4v3gZgoSMMrhmj81XKqOhYGebZj1CQ4z-F2jlI3m-ldJn1KDpDgQiA-ZTQIJixJ9zNjHowZM7buvtQT1IuRVnMkODurvYvq-k9VBe0P_HvK8NiF6752hi1C5_PkvcEQMyja9DCnnK44Rjk_4tfnyuUWbDKnPkOLKOY4OZBf1Sdo8HlTVHmFtb2G00>
+  }
+
+
+
+
 }
 
 
