@@ -1,36 +1,48 @@
-@startuml
+@startuml Диаграмма базы данных
 
-entity "Seller_items" {
-  * item_id : NUMBER
+entity Item {
+  * id : INT
   --
+  seller_id: INT
   name : TEXT
-  price : VARCHAR
+  price : NUMERIC
 }
 
-entity "admin_items" {
-  * item_id : NUMBER
-  --
-  name : TEXT
-  price : VARCHAR
-}
-
-entity "Seller" {
-  * seller_id : TEXT
-  --
-  INN : NUMBER
-  location : TEXT
-}
-
-entity "Admin_Orders" {
-  * order_id : int
+entity Order {
+  * id : INT
   --
   seller_id : TEXT
   admin_id : TEXT
 }
 
+entity Seller {
+  * id : TEXT
+  --
+  ur_face : INT
+  location : TEXT
+}
 
+entity Admin {
+  * id : TEXT
+  --
+  ur_face: INT
+  location : TEXT
+}
 
-User ||--o{ Order
-Order ||--o{ Product
-  
+entity Order_Item {
+  * id: INT
+  --
+  item_id: INT
+  order_id: INT
+  amount: INT
+}
+
+Item --* Seller
+
+Order --* Seller
+Order --* Admin
+
+Order_Item --* Item
+Order_Item --* Order
+
 @enduml
