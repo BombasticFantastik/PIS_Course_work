@@ -1,95 +1,23 @@
 @startuml states
 left to right direction
 
-
-
 [*] --> login
 
 state login as "Вход в систему" {
   login : <img https://img.plantuml.biz/plantuml/png/VOun3e9044NxESM46m05sd4FGa6Y7R6GxSH4JBGMAXeumqOXheboXZytOlO2LfFy_rx-f9KfZgOgIiFev8O54z69cD5ZmC0OvO8NB7vmUCFANQ_ZceDm4oTXj4q23pymAJTByqT0YqKx9uskF64vHklbJ9KhlfXLiPpN6Je5FfgvdCv4wVwmym-k>
-  
 }
-
 
 login --> admin : Вход выполнен (Администратор магазина)
 login --> seller : Вход выполнен (Поставщик)
 
-
 state admin as "Рабочий стол администратора магазина" {
   state admin_item_list as "Список товаров" {
-    admin_item_list: <img https://img.plantuml.biz/plantuml/png/JL8xJiDG4EnpYfLeGV87EeGGXw11AK3G8Gf8Hv12KW0AA7nI8CHNGhGOWsN7nkOAirVW11o1sMSNVfRUsklTsTdPNJteRUxt3ZPtUu8N_23JOrJ8HOSqCI8TcEqSTeIdlkriu5h7c34g4sH8XMbCvNU2Rnrt-njuOgAXvVBtDBqmpoiZ2ptNeGww3kd8tSjRAxXZfI4Y54pw57mXQJuJpEhISowEeAvAX5ZF29TBt_aVw4cDBqfwayPxgGDZY5n7A6hN6n5BHFscQiKIcPwmdA76g5mnFDeZUCUdZdH0D4oRNamNQlBDp9H05MQo7eHhmXZFztspllSxB9trf8PxONSJb89Rb2OH0KhUfxmBon0yarPAfYLoHD88cJivAjAhfSsSjz39l71IXf9GgL8dEX4dbSsBhtU1ln3uZa4Gq0GDeILF6a9NRh3KmOJXHDYPausKo477rd5hMi9-8mOLreNDNN13olSBlbK9myNGJ5Cbz5gpRM_CbCrysEIi4JrlhPWW5Z8mOPq8EkhsRSNuxzGMB7NwnKQolJYTeyxgpjwsBUy_>
+    admin_item_list : <img https://img.plantuml.biz/plantuml/png/JL8xJiDG4EnpYfLeGV87EeGGXw11AK3G8Gf8Hv12KW0AA7nI8CHNGhGOWsN7nkOAirVW11o1sMSNVfRUsklTsTdPNJteRUxt3ZPtUu8N_23JOrJ8HOSqCI8TcEqSTeIdlkriu5h7c34g4sH8XMbCvNU2Rnrt-njuOgAXvVBtDBqmpoiZ2ptNeGww3kd8tSjRAxXZfI4Y54pw57mXQJuJpEhISowEeAvAX5ZF29TBt_aVw4cDBqfwayPxgGDZY5n7A6hN6n5BHFscQiKIcPwmdA76g5mnFDeZUCUdZdH0D4oRNamNQlBDp9H05MQo7eHhmXZFztspllSxB9trf8PxONSJb89Rb2OH0KhUfxmBon0yarPAfYLoHD88cJivAjAhfSsSjz39l71IXf9GgL8dEX4dbSsBhtU1ln3uZa4Gq0GDeILF6a9NRh3KmOJXHDYPausKo477rd5hMi9-8mOLreNDNN13olSBlbK9myNGJ5Cbz5gpRM_CbCrysEIi4JrlhPWW5Z8mOPq8EkhsRSNuxzGMB7NwnKQolJYTeyxgpjwsBUy_>
   }
-
   state admin_zayav_list as "Ваши заявки" {
     admin_zayav_list: <img https://img.plantuml.biz/plantuml/png/TLB1Ji905Bpp5Pju9osLcp7yX-60qPln8Dme2RGN3KQY8Uf18No15MqeXS8lpFi5lyJPjn08qMwoJRSpy-RDsrgprRXfDHjNBOC9riYaXnLoWnaI6M1gFqhjak5pXYUaqaKXiKHoBpqP68lCYOoGO47ibyG6tuIvWnJpkd9Fpa__bxU0zf5YnbXHrvAdSeSCUQZ7GrV2A7l60WaAQWrsEZaoux0JYwJ1M7gRan4-AKOS-H9ZoPKeqrgtRtL069V1Xsr2kc6bMlQgvOhdLIc3TwI6tYAicG3TQNC5TK93YEVzH8LnCezum_C1UxXh2mlwPJuQNsZyeEfNI7RSYNPJ6BmovSYbpVsM--90SlI74pzmJhP64kKdx7bXvsL3OXkKooZV3tr_N_15nLYI_vqWJuFWEF2tYXtTtRXqTxTYh3uvQZhEz4PCfS_8kpgbWXERC-tDbD9wICg8qALMoUnLEc0m_eUzoKfSto_VATKkho_iZVq5>
   }
   
-    state select_count as "Выберите количество" {
-    select_count: <img https://img.plantuml.biz/plantuml/png/SoWkIImgAKxCAL6uCEbYzuMD5xPURBYmusBJXQqA5tPTs7TXDv3J3XHi10fjkh2FgvfB0GZ0X8BIXKb0iQqNjk3HeAHG4trX2b1yuuKDG3vGuSMUMAvQBeVKl1IGjG00>
-  }
-  state correct_zayav as "Выбранная заявка" {
-    correct_zayav: <img https://img.plantuml.biz/plantuml/png/LL71IiD04BtdAnRyWQGbDv5-XPVIGqLlui7crYqaZQ2YK15FWbu4howr8R5jqbzuyqU-dJsqtOKXcNdlpPlPmIGRtsQJyNLcy2bpx2I7mn8RL6ZHe3AeuMJ1r1fDD8qCpn2lg0XifPIvF4iX2uFr8T9XErBewSMP8Th9WvQrL1if3NReI9pxRlB8JgpGWhy6F_YbTAuAqnDguCFpAEs2A-jpBvAJJwQKs5ZV2jzgsuMVTtISev5xclMTbkXK4MzC5ZJCNCSnjiJLf7NuC-UzlatJf6UJE8aP0Y4eTLZv9Unftb8hJroIt6bgfH_Ua1GsIPA-xSKfPT98TJJCmbGQmpA_gElKAPUfwdvGoGrdgu_sFxB3erSAZ3r2oj51ZsWM3QvkBltZ_WC0>
-  }
-
-  admin_item_list-->admin_zayav_list
-  admin_zayav_list-->admin_item_list
-
-  admin_item_list-->select_count
-
-  admin_zayav_list-->correct_zayav
-  correct_zayav-->admin_zayav_list
-
-
- 
 }
-
-state seller as "Рабочий стол поставщика" {
-
-    
-  state seller_item_list as "Список товаров" {
-    seller_item_list: <img https://img.plantuml.biz/plantuml/png/JLBDIiD04BxdAGQyMiYFtaIA3-55UgZeJJpOtaoXHb6XOaHxaAAW89xJQ4YQFrzXvXLy4h_Pf9WzxEpEpdpVDpFR7us7P-FHy6HC_Cu_dCa5rvoJ130nHp9LQvrRXDNikWxuKMQyGbH6d75AI4CgxWcNCXlu243ohJwdE8J0oZaR6829sNSETtc1fu0ZBa3oHVpDINjDUDKmRf1l8b_XJbKGL-1BMk-3J5K2vtB9HUFwH6x5aT_Yrm3Bv0R0AYxcsi3wn7DJQbCeYYmHcIAnvXNjkzwUnjYEuwXrxD-WCjQcDftu3Jmfg2lK5L5RUcuggS7ND2CptaB2JK9l4_0aABAIK48oLMg7SLouJizr38NhmhWjuxPDQqR-05aXTnB8b20tWde00mnp87w2e9UUenYUj-MfQJ4ykzFqxWIVeRyqtO9CkTCvLdBLTYEIQxZlYMlY61HBUBNtsg6o-piIdVKSroNUupMKXiL6sNzeT_ZMnEeVdnxfl_i3>
-  }
-
-  state seller_add_form as "Добавление товара" {
-    seller_add_form: <img https://img.plantuml.biz/plantuml/png/RL6xQiD04Epr5GVv0Fr0CFuFuKB6xeABM9qba4ucJc6m2Ib284MQrBBWi95Z-HTc_oYpal53pi7jShSpitDx_MaKFaVJy2ao-COHEybGep9YcKeKachsPfxXQgEk06zmh1qa5ojBoMHboC9HyPJuPRIIIjuH6iIDHDB4ns4F7vIO4voIKiWB-rEelcQvjlM3ehzGOAltE607PsBQKC-lt9PdNjy0pdwL_0EdzTZtEoosTVeItx_1h-dVKgMI7Fjxbfgxr3lSJzhV4xZWb3AYIjJ_A5Jtg9DEEw00xqHi-9fIARAycikWGRGXyVhZoKW_yGy0>
-  }
-
-  state seller_zayav_list as "Список заявок" {
-    seller_zayav_list: <img https://img.plantuml.biz/plantuml/png/VPBDIiD058NtUOe1zs9_H1SYVG_feg8xSM6pwnJI5Fp1Ggku4gpq1MGQ34tJ9Bx2kM_acHj4it4M0pFtdk-UkNTwmt1m4mu7Lw71Kc9yIGI713kaA94XDTZ0oPnNER9W51YkCpmZPM8fKubb9XEP6-H6nPLCK72F9PAf8R6YrFa0ahwgJyvFgNToZwm9zy7HdW-_CRlm9He9reS-9Detj9V9BIghi2NMyk3J39rCAIpWL4YHmwPEMk2J9bAPQ9cMnGiFCUCxRuD-3LPySo5FVDQZtC7PrW6NfTUAIPM_OaB2z-LQhDjLLBk1igt3VqKqcxCtSrgEU3mwLaR7ObKJPERBi-ri3ytoKXjDSBjsy-e7H5p90bk31Oy5vvIPZfB6THTrhqVrheGKMx8o7LF20ckTS_c3-Urosl_32SP1x_Bwmd-FRm00>
-  }
-  state seller_zayav as "Выбранная заявка" {
-    seller_zayav: <img https://img.plantuml.biz/plantuml/png/VPBDIiD058NtUOe1zs9_H1SYVG_feg8xSM6pwnJI5Fp1Ggku4gpq1MGQ34tJ9Bx2kM_acHj4it4M0pFtdk-UkNTwmt1m4mu7Lw71Kc9yIGI713kaA94XDTZ0oPnNER9W51YkCpmZPM8fKubb9XEP6-H6nPLCK72F9PAf8R6YrFa0ahwgJyvFgNToZwm9zy7HdW-_CRlm9He9reS-9Detj9V9BIghi2NMyk3J39rCAIpWL4YHmwPEMk2J9bAPQ9cMnGiFCUCxRuD-3LPySo5FVDQZtC7PrW6NfTUAIPM_OaB2z-LQhDjLLBk1igt3VqKqcxCtSrgEU3mwLaR7ObKJPERBi-ri3ytoKXjDSBjsy-e7H5p90bk31Oy5vvIPZfB6THTrhqVrheGKMx8o7LF20ckTS_c3-Urosl_32SP1x_Bwmd-FRm00>
-  }
-  state seller_accept_zayav as "Выбранная одобренная заявка" {
-    seller_accept_zayav: <img https://img.plantuml.biz/plantuml/png/JLAzIWD14ExlAOPO2xaarudaAMmaHKGxiJ3fie7aJh0m41L141HihC-G8-ibjxx2p1lvpIn6hnXkPkVxcPtjZyR3w_5eU3acVfESlsN69QzuonKtxBaYtd0fIvHgziaa8Nod_CWL6Xif99U5p6L9N9E1WynvXvZBJ0e2Om2qr0DU3GnzT7RCptlEalW9P3bKj-n9aSJlKD_90mJkv1OjXmJ5W8QWAGvNKAcLWtezdBQ02Fp9tjo3JIsrJ6roe7glA6_KI1pAQUqU3dDajHIyTMRhmwOkO_9YYXwA5UXoe8CnmgzNUHiEWfWMt0tY5vrqkYxBqevBssaR8G8YK-2rtk4VJ2rXGjont5XfRJzgIEOkJTEkwxGpq6I9yLYOngainbtyNvlNVP0np6HXIoe7BlRKvg7vxTclLOh1F-PaclGlhixrHVm0>
-  }
-
-  state seller_change_item as "Окно изменения товара" {
-    seller_change_item: <img https://img.plantuml.biz/plantuml/png/LL2xRi904EplAqwYZcGRYIf2_4UKWeXqY2AuuomP0w51YjD5aIYIWjf2d6mCT_c5sL_8bx1tM3osc3tDpiokhZUE-s_nk3-C9NxmXugciAWbPTosA2XrNKo4v3gZgoSMMrhmj81XKqOhYGebZj1CQ4z-F2jlI3m-ldJn1KDpDgQiA-ZTQIJixJ9zNjHowZM7buvtQT1IuRVnMkODurvYvq-k9VBe0P_HvK8NiF6752hi1C5_PkvcEQMyja9DCnnK44Rjk_4tfnyuUWbDKnPkOLKOY4OZBf1Sdo8HlTVHmFtb2G00>
-  }
-  seller_item_list-->seller_zayav_list
-  seller_zayav_list-->seller_item_list
-  
-  seller_item_list-->seller_add_form
-  seller_add_form-->seller_item_list
-
-  seller_item_list-->seller_change_item
- 
-
-  seller_zayav_list-->seller_zayav
-  seller_zayav-->seller_zayav_list
-
-  seller_zayav-->seller_accept_zayav
-  seller_accept_zayav-->seller_zayav_list
-
-  
-  
-
-
-
-
-}
-
-
 
 @enduml
