@@ -1,0 +1,48 @@
+@startuml
+
+
+actor "Aдминистратор" as admin
+
+boundary "Окно каталога деталей" as admin_order_list
+
+control "Добавить товар в заказ" as add_to_order
+
+boundary "Всплывающее окно заказа" as admin_selected_order
+
+control "Выбрать количество товара" as choose_count
+
+control "Обработка ошибок" as check_mistakes
+
+entity "Фасад БД" as facade_bd
+
+boundary "Окно ошибки" as error_window #Red
+
+
+
+
+
+
+
+admin -- admin_order_list
+
+admin_order_list --> add_to_order
+
+add_to_order -- admin_selected_order
+
+admin_selected_order--choose_count
+
+'choose_count--choose_count
+
+choose_count--facade_bd
+
+choose_count--check_mistakes
+
+check_mistakes--error_window 
+
+' send_zakaz-->facade_bd
+
+' cansel_zakaz-->facade_bd
+
+
+
+@enduml

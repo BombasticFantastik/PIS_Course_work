@@ -1,0 +1,40 @@
+@startuml
+
+
+actor "Aдминистратор" as admin
+
+boundary "Окно заказов" as admin_order_list
+
+control "Перейти к заказу со статусом "Не отправлен"" as to_zakaz
+
+boundary "Окно заказа" as admin_selected_order
+
+control "Отправить заказ" as send_zakaz
+
+control "Отменить заказ" as cansel_zakaz
+
+entity "Фасад БД" as facade_bd
+
+
+
+
+
+admin -- admin_order_list
+
+admin_order_list --> to_zakaz
+
+to_zakaz -- admin_selected_order
+
+admin_selected_order-->send_zakaz
+
+admin_selected_order-->cansel_zakaz
+
+
+
+send_zakaz-->facade_bd
+
+cansel_zakaz-->facade_bd
+
+
+
+@enduml

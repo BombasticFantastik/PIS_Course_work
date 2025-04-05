@@ -1,48 +1,69 @@
 @startuml Диаграмма базы данных
 
-entity Item {
-  * id : INT
-  --
-  seller_id: INT
-  name : TEXT
-  price : NUMERIC
-}
 
-entity Order {
+
+entity Orders {
   * id : INT
   --
   seller_id : TEXT
   admin_id : TEXT
+  created_at: DATETIME
+  status: "Доставляется" | "Не отправлена" | "Ожидает ответа"
+  total_price: REAL
+  
+  
 }
 
-entity Seller {
-  * id : TEXT
+entity Order_Items {
+  *item_id: INT
+  *order_id: INT
   --
-  ur_face : INT
-  location : TEXT
+  count:INT
+
+} 
+
+
+
+entity Items {
+  *id: INT
+  --  
+  seller_id: INT
+  name: TEXT
+  article: INT
+  price: REAL
+  count:INT
+  
 }
 
-entity Admin {
-  * id : TEXT
+
+entity Sellers{
+  *id: INT
   --
-  ur_face: INT
-  location : TEXT
+  login: TEXT
+  password_hash: TEXT
+  INN: INT
+  legal entity: TEXT
+  address: TEXT
+  registered_in: DATETIME
 }
 
-entity Order_Item {
-  * id: INT
+entity Admins{
+  *id: INT
   --
-  item_id: INT
-  order_id: INT
-  amount: INT
+  login: TEXT
+  password_hash: TEXT
+  INN: INT
+  legal entity: TEXT
+  address: TEXT
+  registered_in: DATETIME
 }
 
-Item --* Seller
+Orders ||--o{ Order_Items
+Items ||--o{ Order_Items
 
-Order --* Seller
-Order --* Admin
+Sellers ||--o{ Items
 
-Order_Item --* Item
-Order_Item --* Order
+Sellers ||--o{ Orders
+Admins ||--o{ Orders
 
 @enduml
