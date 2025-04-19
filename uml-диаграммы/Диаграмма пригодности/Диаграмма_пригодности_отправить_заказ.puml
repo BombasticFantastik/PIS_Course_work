@@ -1,0 +1,50 @@
+@startuml
+
+'добавить чек бокс не отправленных заказов
+actor "Aдминистратор" as admin
+
+boundary "Окно заказов" as admin_order_list
+
+control "Запросить заказы поставщика из базы данных" as give_me_orders
+
+control "Перейти к заказу со статусом "Не отправлен"" as to_zakaz
+
+boundary "Окно заказа" as admin_selected_order
+
+control "Запросить детали заказа из базы данных" as give_order_details
+
+control "Отправить заказ" as send_zakaz
+
+control "Отменить заказ" as cansel_zakaz
+
+entity "Фасад БД" as facade_bd
+
+
+
+
+
+admin -- admin_order_list
+
+admin_order_list--give_me_orders
+
+give_me_orders -- to_zakaz
+
+to_zakaz -- admin_selected_order
+
+admin_selected_order--give_order_details 
+
+give_order_details--send_zakaz
+
+'admin_selected_order-->give_order_details
+
+give_order_details--cansel_zakaz
+
+
+
+send_zakaz--facade_bd
+
+cansel_zakaz--facade_bd
+
+
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml Диаграмма последовательности отправления заказа+
+
+actor Admin as "Администратор"
+
+boundary item_list as "Окно заказов"
+boundary selected_order_window as "Окно выбраного заказа"
+boundary error as "Окно ошибки" #red
+
+entity facade as "Фасад БД"
+
+Admin -> item_list : Открыто окно
+
+item_list -> facade : getItems()
+facade --> item_list : List<Item>
+
+Admin -> selected_order_window : Перейти к \n выбраному заказу
+
+selected_order_window->facade : push_Order(Item item)
+selected_order_window->selected_order_window: Отобразить информацию \n о заказе
+item_list -> item_list : Отобразить информацию \n о заказе| 
+
+@enduml
