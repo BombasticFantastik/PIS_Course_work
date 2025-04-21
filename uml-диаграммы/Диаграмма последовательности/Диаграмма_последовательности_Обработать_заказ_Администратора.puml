@@ -4,7 +4,7 @@ actor Admin as "Поставщик"
 
 boundary item_list as "Окно заказов"
 boundary selected_order_window as "Окно выбраного заказа"
-boundary error as "Окно ошибки" #red
+
 
 entity facade as "Фасад БД"
 
@@ -12,6 +12,7 @@ Admin -> item_list : Открыто окно
 
 item_list -> facade : getItems()
 facade --> item_list : List<Item>
+item_list->item_list : Отобразить информацию \n о заказах
 
 Admin -> selected_order_window : Перейти к \n выбраному заказу
 

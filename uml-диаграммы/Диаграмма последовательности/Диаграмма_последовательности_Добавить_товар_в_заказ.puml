@@ -1,11 +1,9 @@
-
 @startuml Диаграмма последовательности добавления новых товаров
 
 actor Admin as "Администратор"
 
 boundary item_list as "Окно каталога деталей"
 boundary count_window as "Окно выбора количества товара"
-boundary error as "Окно ошибки" #red
 
 entity facade as "Фасад БД"
 
@@ -14,10 +12,12 @@ Admin -> item_list : Открыто окно
 item_list -> facade : getItems()
 facade --> item_list : List<Item>
 
+item_list -> item_list: Отобразить информацию \n о товарах
+
 Admin -> item_list : Добавление товара \n в заказ
 
 Admin ->count_window:Выбрать количество товара
-count_window->facade : addItemToList(Item item)
+item_list->facade : addItemToList(Item item)
 item_list -> item_list : Отобразить информацию \n о товаре
 
 @enduml

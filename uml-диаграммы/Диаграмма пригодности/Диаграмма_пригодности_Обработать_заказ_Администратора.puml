@@ -30,16 +30,18 @@ seller--list_of_orders
 list_of_orders-- give_me_orders 
 
 
-give_me_orders--to_order_list
+list_of_orders--to_order_list
 
 to_order_list--selected_order
 
 selected_order--give_me_order_details
 
-give_me_order_details--accept_order
+selected_order--accept_order
+selected_order--cansel_order
 
-give_me_order_details--cansel_order
-
+'give_me_order_details--cansel_order
+give_me_orders--facade_bd
+give_me_order_details--facade_bd
 accept_order--facade_bd
 cansel_order--facade_bd
 

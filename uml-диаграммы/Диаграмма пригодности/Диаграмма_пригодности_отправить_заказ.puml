@@ -27,17 +27,21 @@ admin -- admin_order_list
 
 admin_order_list--give_me_orders
 
-give_me_orders -- to_zakaz
+admin_order_list -- to_zakaz
 
 to_zakaz -- admin_selected_order
 
 admin_selected_order--give_order_details 
 
-give_order_details--send_zakaz
+admin_selected_order--send_zakaz
+
+give_order_details--facade_bd
+
+give_me_orders--facade_bd
 
 'admin_selected_order-->give_order_details
 
-give_order_details--cansel_zakaz
+admin_selected_order--cansel_zakaz
 
 
 
