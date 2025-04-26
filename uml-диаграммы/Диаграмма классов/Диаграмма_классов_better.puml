@@ -28,15 +28,19 @@ FacadeDB ..|> IUserDB
 FacadeDB ..|> IItemDB
 FacadeDB ..|> IOrderDB
  
-IUserDB <--o Admin
-IUserDB <--o Seller
+IUserDB <--o User
+
 IUserDB <--o Item
 IItemDB <--o Item
 IOrderDB <--o Order
  
-class Admin {
+
+
+
+class User {
   * id: TEXT
   --
+  + status: UserStatus
   + login: TEXT
   + password_hash: TEXT
   + INN: INT
@@ -45,17 +49,12 @@ class Admin {
   + registred_in: DATETIME
 }
 
-
-class Seller {
-  * id: TEXT
-  --
-  + login: TEXT
-  + password_hash: TEXT
-  + INN: INT
-  + legal_entity: TEXT
-  + adress: TEXT
-  + registred_in: DATETIME
+enum UserStatus {
+  ADMIN
+  SELLER
 }
+ 
+User *- UserStatus
  
  
 
@@ -90,11 +89,28 @@ Order *- OrderStatus
  
 ' WINDOWS
  
-WindowLogin o--> IUserDB
+package "Item Windows" {
+SellerWindowItemList o--> IItemDB
+AdminWindowItemList o--> IItemDB
+}
+package "Order Windows" {
+AdminWindowOrder o--> IOrderDB
+SellerWindowOrder o--> IOrderDB
+}
 
-WindowItemList o--> IItemDB
-WindowOrderList o--> IOrderDB
-WindowOrder o--> IOrderDB
+package "Login Windows" {
+AdminWindowLogin o--> IUserDB
+SellerWindowLogin o--> IUserDB
+}
+
+
+
+package "OrderList Windows" {
+AdminWindowOrderList o--> IOrderDB
+SellerWindowOrderList o--> IOrderDB
+}
+
+
  
 @enduml
  

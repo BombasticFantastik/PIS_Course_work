@@ -36,20 +36,21 @@ entity Items {
 }
 
 
-entity Sellers{
-  *id: INT
-  --
-  login: TEXT
-  password_hash: TEXT
-  INN: INT
-  legal entity: TEXT
-  address: TEXT
-  registered_in: DATETIME
-}
+' entity Sellers{
+'   *id: INT
+'   --
+'   login: TEXT
+'   password_hash: TEXT
+'   INN: INT
+'   legal entity: TEXT
+'   address: TEXT
+'   registered_in: DATETIME
+' }
 
-entity Admins{
+entity Users{
   *id: INT
   --
+  Status: "Администратор" |"Поставщик"
   login: TEXT
   password_hash: TEXT
   INN: INT
@@ -61,9 +62,9 @@ entity Admins{
 Orders ||--o{ Order_Items
 Items ||--o{ Order_Items
 
-Sellers ||--o{ Items
+Users ||--o{ Items
 
-Sellers ||--o{ Orders
-Admins ||--o{ Orders
+Users ||--o{ Orders
+
 
 @enduml
