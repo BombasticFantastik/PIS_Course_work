@@ -4,10 +4,19 @@ import abc
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 
+import yaml
 
-engine=create_engine('postgresql+psycopg2://postgres:12345@localhost/pis_base')
+
+
+option_path='config.yaml'
+with open(option_path,'r') as file_option:
+    option=yaml.safe_load(file_option)
+
+
+engine=create_engine(option_path['path'])
 engine.connect()
 Base=declarative_base()
+
 class Item(Base):
     __tablename__='items'
     id=Column(Integer,primary_key=True)
@@ -17,19 +26,10 @@ class Item(Base):
     price=Column(Float)
     count=Column(Integer)
     
-class Seller(Base):
-    __tablename__='sellers'
-    id=Column(Integer,primary_key=True)
-    login=Column(String)
-    password_hash=Column(String)
-    INN=Column(Integer)
-    legal_entity=Column(String)
-    address=Column(String)
-    registred_in=Column(Date)
-
-class Admin(Base):
+class Users(Base):
     __tablename__='admins'
     id=Column(Integer,primary_key=True)
+    Status=Column(String)
     login=Column(String)
     password_hash=Column(String)
     INN=Column(Integer)
@@ -51,6 +51,3 @@ class Order_Item(Base):
     item_id=Column(Integer,primary_key=True)
     order_id=Column(Integer,primary_key=True)
     count=Column(Integer)
-
-    
-    

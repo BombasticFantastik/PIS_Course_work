@@ -1,27 +1,29 @@
 @startuml Диаграмма классов
  
-class FacadeDB
+class FacadeDB{
+  --
+  + add(Object object) => Object
+}
  
 interface IUserDB {
-  + add_user(User user) => User
-  + get_users() => List<User>
-  + get_user_by_id(string id) => User
-  + get_user_by_login(string login) => User
-  + get_user_cart(string id) => List<Item>
+  + get_users(  ) => List<Item>
+  + save_сhanges()
+  + cansel_сhanges()
 }
  
 interface IItemDB {
-  + add_item(Item item) => Item
+  
   + get_items() => List<Item>
-  + get_item_by_id(string id) => Item
-  + set_item_amount(string id, int amount) => Item
+  + save_сhanges()
+  + cansel_сhanges()
 }
  
 interface IOrderDB {
-  + add_order(Order order) => Order
-  + get_orders()
-  + get_order_by_id(string id)
-  + set_order_status(string id, string status)
+
+  + get_orders() => List<Item>
+  + save_сhanges()
+  + cansel_сhanges()
+
 }
  
 FacadeDB ..|> IUserDB

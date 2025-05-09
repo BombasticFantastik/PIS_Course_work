@@ -3,11 +3,13 @@ import psycopg2
 import abc
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
-from Model.Interfaces.AlchFacade import AlchFacade
+from Model.AlchFacade import 
 from bd_classes import Item
 
-engine=create_engine('postgresql+psycopg2://postgres:12345@localhost/pis_base')
+engine=create_engine()
 engine.connect()
+
+Base=declarative_base()
 
 Session=sessionmaker(bind=engine)
 sesion=Session()

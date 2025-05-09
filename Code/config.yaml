@@ -1,0 +1,1 @@
+path: 'postgresql+psycopg2://postgres:12345@localhost/pis_base'
