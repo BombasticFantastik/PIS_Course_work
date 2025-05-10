@@ -8,14 +8,15 @@ import yaml
 
 
 
-option_path='config.yaml'
+option_path='/home/artemybombastic/Рабочий стол/Курсовая работа: проектирование информационных систем/Code/config.yaml'
 with open(option_path,'r') as file_option:
     option=yaml.safe_load(file_option)
 
 
-engine=create_engine(option_path['path'])
+engine=create_engine(option['path'])
 engine.connect()
 Base=declarative_base()
+
 
 class Item(Base):
     __tablename__='items'
@@ -26,8 +27,8 @@ class Item(Base):
     price=Column(Float)
     count=Column(Integer)
     
-class Users(Base):
-    __tablename__='admins'
+class User(Base):
+    __tablename__='users'
     id=Column(Integer,primary_key=True)
     Status=Column(String)
     login=Column(String)
@@ -51,3 +52,5 @@ class Order_Item(Base):
     item_id=Column(Integer,primary_key=True)
     order_id=Column(Integer,primary_key=True)
     count=Column(Integer)
+
+#Base.metadata.create_all(engine)
