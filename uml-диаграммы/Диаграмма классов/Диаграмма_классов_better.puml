@@ -7,22 +7,17 @@ class FacadeDB{
  
 interface IUserDB {
   + get_users(  ) => List<Item>
-  + save_сhanges()
-  + cansel_сhanges()
+
 }
  
 interface IItemDB {
   
   + get_items() => List<Item>
-  + save_сhanges()
-  + cansel_сhanges()
 }
  
 interface IOrderDB {
 
   + get_orders() => List<Item>
-  + save_сhanges()
-  + cansel_сhanges()
 
 }
  

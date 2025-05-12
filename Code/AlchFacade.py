@@ -53,9 +53,11 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
 
     def add(self,object):
         self.session.add(object)
+        self.save()
     def delete(self,object):
         self.session.delete(object)
+        self.save()
     def save(self):
         self.session.commit()
-    def cancel_changes(self):
-        self.session.rollback()
+    # def cancel_changes(self):
+    #     self.session.rollback()
