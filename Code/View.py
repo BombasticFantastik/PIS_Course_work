@@ -1,7 +1,9 @@
 import sys
-
+from PyQt6.QtCore import pyqtSignal, QObject
 from PyQt6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout,QLineEdit,QTableWidget,QTableWidgetItem
 #from sqlalchemy import create_engine,Column,Integer,String,Float,Table,MetaData,insert,delete,update,text
+class Communicate(QObject):
+        signal = pyqtSignal(str)
 
 class Admin_Cat(QWidget):
     def __init__(self,items_fu,orders_fu,users_fu,add_fu,del_fu):
@@ -63,6 +65,16 @@ class Admin_Cat(QWidget):
         main_layout.addLayout(right_layout)
         main_layout.addLayout(table_layout)
         self.setLayout(main_layout)
+
+
+
+
+
+
+        self.filttred_text=None
+
+
+
     def fill(self):
         #fill
             items=self.items_fu()
@@ -84,9 +96,20 @@ class Admin_Cat(QWidget):
                 self.table.setItem(costil,4,price)
                 self.table.setItem(costil,5,cnt)
 
+    
+
     def filtr(self):
-        self.filtr_window=Filter_window(select_fu=self.items_fu)
+        self.communication = Communicate()
+        
+        self.filtr_window=Filter_window(select_fu=self.items_fu,communication=self.communication)
+        self.communication.signal.connect(self.update_label)
         self.filtr_window.show()
+        
+
+    def update_label(self, message):
+        self.filttred_text=message
+        print(message)
+        
         
     def remove(self):
         pass
@@ -98,8 +121,14 @@ class Admin_Cat(QWidget):
 
 
 class Filter_window(QWidget):
-    def __init__(self,select_fu):
+    
+    def __init__(self,select_fu,communication):
         super().__init__()
+        self.select_fu=select_fu
+        self.con=communication
+        
+        
+        
     
         #labels
         self.seller_label=QLabel('id')
@@ -126,17 +155,25 @@ class Filter_window(QWidget):
         input_layout.addWidget(self.name_input)
         input_layout.addWidget(self.price_input)
         input_layout.addWidget(self.art_input)
-
         #button
         self.filtr_button=QPushButton("Отфильтровать")
         self.filtr_button.clicked.connect(self.filtr)
+        input_layout.addWidget(self.filtr_button)
+
+        
 
         main_layout = QHBoxLayout()
         main_layout.addLayout(labels_layout)
         main_layout.addLayout(input_layout)
         self.setLayout(main_layout)
-    def filtr(self,select_fu):
-        result=select_fu(self.seller_input.text(),self.name_input.text(),self.price_input.text(),self.art_input.text())
-        return result
+    def filtr(self):
+        #self.con.signal.emit(select_fu(self.seller_input.text(),self.name_input.text(),self.price_input.text(),self.art_input.text()))
+        #print(self.seller_input.text(),self.name_input.text(),self.price_input.text(),self.art_input.text())
+        #a=self.select_fu()
+        self.con.signal.emit(str(self.select_fu(self.seller_input.text(),self.name_input.text(),self.price_input.text(),self.art_input.text())))
+        #self.con.signal.emit(1)
+        #self.con.signal.emit()
+        #self.con.signal.emit()
+        
 
         
