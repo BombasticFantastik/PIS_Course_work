@@ -1,140 +1,142 @@
 import sys
-from PyQt6.QtWidgets import QApplication
-from PyQt6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout,QLineEdit
-from random import randint
 
+from PyQt6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout,QLineEdit,QTableWidget,QTableWidgetItem
+#from sqlalchemy import create_engine,Column,Integer,String,Float,Table,MetaData,insert,delete,update,text
 
-class Third_Window(QWidget):
-    def __init__(self):
+class Admin_Cat(QWidget):
+    def __init__(self,items_fu,orders_fu,users_fu,add_fu,del_fu):
+        self.items_fu=items_fu
+        self.orders_fu=orders_fu
+        self.users_fu=users_fu
+        self.add_fu=add_fu
+        self.del_fu=del_fu
+        
         super().__init__()
         
-        self.setWindowTitle("Интерфейс с фотографиями и кнопками")
-        self.setGeometry(256, 256, 512, 256)
+        self.setWindowTitle("Warehouse")
+        self.filtr_window = None
+
+        self.setFixedSize(1280,500)
+
+        #table
+        self.table = QTableWidget()
+        self.table.setFixedSize(655,387)
+        self.table.setRowCount(25)
+        self.table.setColumnCount(6)
+        self.fill()
+
+        
+
+        #Добавить/Удалить/Найти
+        self.button_Add = QPushButton("Фильтр", self)
+        self.button_Remove = QPushButton("Удалить", self)
+        self.button_Select=QPushButton('Выбрать',self)
+
+        #задаём размеры
 
 
-        #создаём p и g
 
-        self.p_label=QLabel('p:')
-        self.g_label=QLabel('g:')
-
-
-        #инпуты
-        self.p_input=QLineEdit()
-        self.g_input=QLineEdit()
-
-        self.button_get_p = QPushButton("Создать p", self)
-        self.button_get_g = QPushButton("Создать g", self)
-        self.button_get_p.clicked.connect(self.on_button_get_p_clicked)
-        self.button_get_g.clicked.connect(self.on_button_get_g_clicked)
-
-
-
-
-        self.a_label=QLabel('а:')
-        self.b_label=QLabel('b:')
-
-
-        #инпуты
-        self.a_input=QLineEdit()
-        self.b_input=QLineEdit()
-        #A и B
-        self.A_label=QLabel('А:')
-        self.B_label=QLabel('B:')
-
-        #инпуты
-        self.A_input=QLineEdit()
-        self.B_input=QLineEdit()
-
-        #K
-        self.K_label_left=QLabel('K:')
-        self.K_label_right=QLabel('K:')
-        self.K_input_left=QLineEdit()
-        self.K_input_right=QLineEdit()
-
-        self.button_get_left_K = QPushButton("Создать K", self)
-        self.button_get_right_K = QPushButton("Создать K", self)
-        self.button_get_left_K.clicked.connect(self.on_button_get_left_K_clicked)
-        self.button_get_right_K.clicked.connect(self.on_button_get_right_K_clicked)
-
-        #кнопки для создания a и b
-
-        self.button_get_a = QPushButton("Создать a", self)
-        self.button_get_b = QPushButton("Создать b", self)
-        self.button_get_a.clicked.connect(self.on_button_get_a_clicked)
-        self.button_get_b.clicked.connect(self.on_button_get_b_clicked)
-
-
-        #кнопки для создания A и B
-        self.button_get_A = QPushButton("Создать A", self)
-        self.button_get_B = QPushButton("Создать B", self)
-        self.button_get_A.clicked.connect(self.on_button_get_A_clicked)
-        self.button_get_B.clicked.connect(self.on_button_get_B_clicked)
 
         #левый
         left_layout = QVBoxLayout()
-        left_layout.addWidget(self.p_label)
-        left_layout.addWidget(self.p_input)
-        left_layout.addWidget(self.button_get_p)
-        left_layout.addWidget(self.a_label)
-        left_layout.addWidget(self.a_input)
-        left_layout.addWidget(self.button_get_a)
-        left_layout.addWidget(self.A_label)
-        left_layout.addWidget(self.A_input)
-        left_layout.addWidget(self.button_get_A)
-        left_layout.addWidget(self.K_label_left)
-        left_layout.addWidget(self.K_input_left)
-        left_layout.addWidget(self.button_get_left_K)
+        left_layout.addWidget(self.button_Add)
+        
+
         #правый
         right_layout = QVBoxLayout()
-        right_layout.addWidget(self.g_label)
-        right_layout.addWidget(self.g_input)
-        right_layout.addWidget(self.button_get_g)
-        right_layout.addWidget(self.b_label)
-        right_layout.addWidget(self.b_input)
-        right_layout.addWidget(self.button_get_b)
-        right_layout.addWidget(self.B_label)
-        right_layout.addWidget(self.B_input)
-        right_layout.addWidget(self.button_get_B)
-        right_layout.addWidget(self.K_label_right)
-        right_layout.addWidget(self.K_input_right)
-        right_layout.addWidget(self.button_get_right_K)
+        right_layout.addWidget(self.button_Remove)
+
+        #table
+        table_layout = QVBoxLayout()
+        table_layout.addWidget(self.table)
+
+        table_layout.addWidget(self.button_Select)
+
+        #кнопки
+        self.button_Add.clicked.connect(self.filtr)
+        self.button_Remove.clicked.connect(self.remove)
+        self.button_Select.clicked.connect(self.select)
+
 
         main_layout = QHBoxLayout()
         main_layout.addLayout(left_layout)
         main_layout.addLayout(right_layout)
+        main_layout.addLayout(table_layout)
         self.setLayout(main_layout)
+    def fill(self):
+        #fill
+            items=self.items_fu()
+            for i in items:
 
+                id=QTableWidgetItem(str(i.id))
+                sell_id=QTableWidgetItem(str(i.seller_id))
+                name=QTableWidgetItem(str(i.name))
+                art=QTableWidgetItem(str(i.article))
+                price=QTableWidgetItem(str(i.price))
+                cnt=QTableWidgetItem(str(i.count))
+
+                costil=i.id
+
+                self.table.setItem(costil,0,id)
+                self.table.setItem(costil,1,sell_id)
+                self.table.setItem(costil,2,name)
+                self.table.setItem(costil,3,art)
+                self.table.setItem(costil,4,price)
+                self.table.setItem(costil,5,cnt)
+
+    def filtr(self):
+        self.filtr_window=Filter_window(select_fu=self.items_fu)
+        self.filtr_window.show()
         
-    #p и g
-    def on_button_get_p_clicked(self):
-       pass
-    def on_button_get_g_clicked(self):
+    def remove(self):
         pass
-    #a и b
-    def on_button_get_a_clicked(self):
-        self.a_input.setText(str(randint(10**27,(10**28)-1)))
-    def on_button_get_b_clicked(self):
-        self.b_input.setText(str(randint(10**27,(10**28)-1)))
-
-    #A и B
-    def on_button_get_A_clicked(self):
-        A=pow(int(self.g_input.text()),int(self.a_input.text()),int(self.p_input.text()))
-        self.A_input.setText(str(A))
-    def on_button_get_B_clicked(self):
-        B=pow(int(self.g_input.text()),int(self.b_input.text()),int(self.p_input.text()))
-        self.B_input.setText(str(B))
-
-    #K
-    def on_button_get_left_K_clicked(self):
-        K=pow(int(self.B_input.text()),int(self.a_input.text()),int(self.p_input.text()))
-        self.K_input_left.setText(str(K))
-        #pow(B,a,p)
-
-    def on_button_get_right_K_clicked(self):
-        K=pow(int(self.A_input.text()),int(self.b_input.text()),int(self.p_input.text()))
-        self.K_input_right.setText(str(K))
+    def select(self):
+        print(self.select_fu()[0])
         
-app = QApplication(sys.argv)
-window = Third_Window()
-window.show()
-sys.exit(app.exec())
+    def show_table(self,data):
+        pass
+
+
+class Filter_window(QWidget):
+    def __init__(self,select_fu):
+        super().__init__()
+    
+        #labels
+        self.seller_label=QLabel('id')
+        self.name_label=QLabel('name')
+        self.price_label=QLabel('price')
+        self.art_label=QLabel('art')
+
+        #inputs
+        self.seller_input=QLineEdit()
+        self.name_input=QLineEdit()
+        self.price_input=QLineEdit()
+        self.art_input=QLineEdit()
+
+        #labels_layout
+        labels_layout = QVBoxLayout()
+        labels_layout.addWidget(self.seller_label)
+        labels_layout.addWidget(self.name_label)
+        labels_layout.addWidget(self.price_label)
+        labels_layout.addWidget(self.art_label)
+
+        #inputs_labels
+        input_layout=QVBoxLayout()
+        input_layout.addWidget(self.seller_input)
+        input_layout.addWidget(self.name_input)
+        input_layout.addWidget(self.price_input)
+        input_layout.addWidget(self.art_input)
+
+        #button
+        self.filtr_button=QPushButton("Отфильтровать")
+        self.filtr_button.clicked.connect(self.filtr)
+
+        main_layout = QHBoxLayout()
+        main_layout.addLayout(labels_layout)
+        main_layout.addLayout(input_layout)
+        self.setLayout(main_layout)
+    def filtr(self,select_fu):
+        result=select_fu(self.seller_input.text(),self.name_input.text(),self.price_input.text(),self.art_input.text())
+        return result
+
+        

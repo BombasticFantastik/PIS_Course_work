@@ -3,7 +3,6 @@ import psycopg2
 import abc
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
-
 import yaml
 
 
@@ -20,6 +19,7 @@ Base=declarative_base()
 
 class Item(Base):
     __tablename__='items'
+    
     id=Column(Integer,primary_key=True)
     seller_id=Column(Integer)
     name=Column(String)
@@ -53,4 +53,4 @@ class Order_Item(Base):
     order_id=Column(Integer,primary_key=True)
     count=Column(Integer)
 
-#Base.metadata.create_all(engine)
+#Base.metadata.create_all(engine)   
