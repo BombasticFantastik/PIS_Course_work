@@ -1,5 +1,5 @@
 from Interfaces import IItemDB,IOrderDB,IUserDB
-from classes import Item,User,Order
+from classes import Item,User,Order,Order_Item
 
 class AlchFacade(IItemDB,IOrderDB,IUserDB):
     def __init__(self,engine,session):
@@ -50,6 +50,15 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
             selected_orders=selected_orders.filter_by(created_in=created_in)
         return selected_orders
     
+    def get_order_items(self,item_id=None,order_id=None,cnt=None):
+        selected_order_items=self.session.query(Order_Item)
+        if item_id:
+            selected_order_items=selected_order_items.filter_by(item_id)
+        if order_id:
+            selected_order_items=selected_order_items.filter_by(order_id)
+        if cnt:
+            selected_order_items=selected_order_items.filter_by(cnt)
+        return selected_order_items
 
     def add(self,object):
         self.session.add(object)

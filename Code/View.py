@@ -6,10 +6,11 @@ class Communicate(QObject):
         signal = pyqtSignal(str)
 
 class Admin_Cat(QWidget):
-    def __init__(self,items_fu,orders_fu,users_fu,add_fu,del_fu):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu):
         self.items_fu=items_fu
         self.orders_fu=orders_fu
         self.users_fu=users_fu
+        self.orders_fu=orders_fu
         self.add_fu=add_fu
         self.del_fu=del_fu
         
@@ -263,3 +264,82 @@ class Admin_Orders_window(QWidget):
         pass
 
         
+
+class Selected_Order_window(QWidget):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu):
+        self.items_fu=items_fu
+        self.orders_fu=orders_fu
+        self.users_fu=users_fu
+        self.order_items_fu=order_items_fu
+        self.add_fu=add_fu
+        self.del_fu=del_fu
+        
+        super().__init__()
+        
+        self.setWindowTitle("Детали вашего заказа")
+        #self.filtr_window = None
+
+        self.setFixedSize(560,400)
+
+        #table
+        self.table = QTableWidget()
+        self.table.setFixedSize(350,387)
+        self.table.setRowCount(25)
+        self.table.setColumnCount(3)
+        self.fill()
+
+        #left
+        self.id_select_label=QLabel('Введите Id')
+        self.id_select = QLineEdit()
+        self.remove_detail=QPushButton('Удалить товар с \n с выбранным Id',self)
+        self.remove_order=QPushButton('Отменить \n заказ',self)
+        self.accept_order=QPushButton('Одобрить \n заказ',self)
+        self.id_select_label.setFixedSize(200,10)
+        self.id_select.setFixedSize(200,50)
+        self.remove_detail.setFixedSize(200,100)
+        self.remove_order.setFixedSize(200,100)
+        self.accept_order.setFixedSize(200,100)
+
+        
+        #left_layout
+        left_layout = QVBoxLayout()
+        left_layout.addWidget(self.id_select_label)
+        left_layout.addWidget(self.id_select)
+        left_layout.addWidget(self.remove_detail)
+        left_layout.addWidget(self.remove_order)
+        left_layout.addWidget(self.accept_order)
+
+        #table
+        table_layout = QVBoxLayout()
+        table_layout.addWidget(self.table)
+        #self.go_to_order.clicked.connect(self.go_to_ord_func)
+
+        #main
+        main_layout = QHBoxLayout()
+        main_layout.addLayout(left_layout)
+        main_layout.addLayout(table_layout)
+        self.setLayout(main_layout)
+        #self.filttred_text=None
+
+
+
+    def fill(self,order_items=None):
+        self.table.clear()
+        self.table.setHorizontalHeaderLabels([
+            'item_id',
+            'order_id',
+            'count',
+        ])
+        if order_items==None:
+            order_items=self.order_items_fu()
+        print(order_items)
+        for j,i in enumerate(order_items):
+            item_id=QTableWidgetItem(str(i.item_id))
+            sell_id=QTableWidgetItem(str(i.order_id))
+            cnt=QTableWidgetItem(str(i.count))
+            costil=1
+            self.table.setItem(j,0,item_id)
+            self.table.setItem(j,1,sell_id)
+            self.table.setItem(j,2,cnt)
+    def go_to_ord_func(self):
+        pass

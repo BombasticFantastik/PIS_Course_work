@@ -1,10 +1,10 @@
 from sqlalchemy import create_engine
 import psycopg2
 import abc
-from View import Admin_Cat,Filter_window,Admin_Orders_window
+from View import Admin_Cat,Filter_window,Admin_Orders_window,Selected_Order_window
 import sys
 from PyQt6.QtWidgets import QApplication
-from classes import Item,Order
+from classes import Item,Order,Order_Item
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 from AlchFacade import AlchFacade
@@ -17,7 +17,7 @@ engine.connect()
 Session=sessionmaker(bind=engine)
 session=Session()
 Fasade=AlchFacade(engine,session)
-#item0=Order(id=1,seller_id=3,admin_id=1,created_in='03-04-2024',status='Не отправлена',total_price=12015)
+#item0=Order_Item(item_id=1,order_id=1,count=15)
 # item1=Order(id=1,seller_id=3,name="Камера для шины Mersedes Banse",article=3333,price=1500,count=20)
 # item2=Order(seller_id=1,name="Покрышка Mersedes Banse",article=1235,price=2500,count=11)
 #Fasade.add(item0)
@@ -30,12 +30,12 @@ Fasade=AlchFacade(engine,session)
 # window.show()
 # sys.exit(app.exec())
 
-# app = QApplication(sys.argv)
-# window = Filter_window()
-# window.show()
-# sys.exit(app.exec())
-
 app = QApplication(sys.argv)
-window = Admin_Orders_window(Fasade.get_items,Fasade.get_orders,Fasade.get_users,Fasade.add,Fasade.delete)
+window = Selected_Order_window(Fasade.get_items,Fasade.get_orders,Fasade.get_users,Fasade.get_order_items,Fasade.add,Fasade.delete)
 window.show()
 sys.exit(app.exec())
+
+# app = QApplication(sys.argv)
+# window = Admin_Orders_window(Fasade.get_items,Fasade.get_orders,Fasade.get_users,Fasade.add,Fasade.delete)
+# window.show()
+# sys.exit(app.exec())
