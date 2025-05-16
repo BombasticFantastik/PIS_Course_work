@@ -192,10 +192,10 @@ class Admin_Orders_window(QWidget):
         
         super().__init__()
         
-        self.setWindowTitle("Warehouse")
+        self.setWindowTitle("Ваши заказы")
         self.filtr_window = None
 
-        self.setFixedSize(1280,500)
+        self.setFixedSize(900,400)
 
         #table
         self.table = QTableWidget()
@@ -204,55 +204,32 @@ class Admin_Orders_window(QWidget):
         self.table.setColumnCount(6)
         self.fill()
 
-        
-
-
+        #left
         self.id_select_label=QLabel('Введите Id')
         self.id_select = QLineEdit()
-        self.go_to_order=QPushButton('Перейти к заказу с выбранным Id',self)
+        self.go_to_order=QPushButton('Перейти к заказу \n с выбранным Id',self)
+        self.id_select_label.setFixedSize(200,10)
+        self.id_select.setFixedSize(200,50)
+        self.go_to_order.setFixedSize(200,100)
+
         
-
-
-
-
-
-        #левый
+        #left_layout
         left_layout = QVBoxLayout()
-
         left_layout.addWidget(self.id_select_label)
         left_layout.addWidget(self.id_select)
         left_layout.addWidget(self.go_to_order)
-        
-
-        #правый
-        right_layout = QVBoxLayout()
-
 
         #table
         table_layout = QVBoxLayout()
         table_layout.addWidget(self.table)
-
-
-
-        #кнопки
-        # self.button_Add.clicked.connect(self.filtr)
-        # self.button_Remove.clicked.connect(self.remove)
-        # self.button_Select.clicked.connect(self.select)
         self.go_to_order.clicked.connect(self.go_to_ord_func)
 
-
+        #main
         main_layout = QHBoxLayout()
         main_layout.addLayout(left_layout)
-        main_layout.addLayout(right_layout)
         main_layout.addLayout(table_layout)
         self.setLayout(main_layout)
-
-
-
-
-
-
-        self.filttred_text=None
+        #self.filttred_text=None
 
 
 
