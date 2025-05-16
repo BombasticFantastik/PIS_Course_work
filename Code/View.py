@@ -206,35 +206,38 @@ class Admin_Orders_window(QWidget):
 
         
 
-        #Добавить/Удалить/Найти
-        self.button_Add = QPushButton("Фильтр", self)
-        self.button_Remove = QPushButton("Удалить", self)
-        self.button_Select=QPushButton('Выбрать',self)
 
-        #задаём размеры
+        self.id_select_label=QLabel('Введите Id')
+        self.id_select = QLineEdit()
+        self.go_to_order=QPushButton('Перейти к заказу с выбранным Id',self)
+        
+
 
 
 
 
         #левый
         left_layout = QVBoxLayout()
-        left_layout.addWidget(self.button_Add)
+
+        left_layout.addWidget(self.id_select_label)
+        left_layout.addWidget(self.id_select)
+        left_layout.addWidget(self.go_to_order)
         
 
         #правый
         right_layout = QVBoxLayout()
-        right_layout.addWidget(self.button_Remove)
+
 
         #table
         table_layout = QVBoxLayout()
         table_layout.addWidget(self.table)
 
-        table_layout.addWidget(self.button_Select)
+
 
         #кнопки
-        self.button_Add.clicked.connect(self.filtr)
-        self.button_Remove.clicked.connect(self.remove)
-        self.button_Select.clicked.connect(self.select)
+        # self.button_Add.clicked.connect(self.filtr)
+        # self.button_Remove.clicked.connect(self.remove)
+        # self.button_Select.clicked.connect(self.select)
 
 
         main_layout = QHBoxLayout()
@@ -252,60 +255,48 @@ class Admin_Orders_window(QWidget):
 
 
 
-    def fill(self,items=None):
+    def fill(self,orders=None):
         self.table.clear()
         self.table.setHorizontalHeaderLabels([
             'id',
             'seller_id',
-            'name',
-            'article',
-            'price',
-            'count',
+            'admin_id',
+            'created_in',
+            'status',
+            'total_price',
         ])
-        if items==None:
-            items=self.items_fu()
-        for i in items:
-
+        if orders==None:
+            orders=self.orders_fu()
+        for i in orders:
             id=QTableWidgetItem(str(i.id))
             sell_id=QTableWidgetItem(str(i.seller_id))
-            name=QTableWidgetItem(str(i.name))
-            art=QTableWidgetItem(str(i.article))
-            price=QTableWidgetItem(str(i.price))
-            cnt=QTableWidgetItem(str(i.count))
-
+            name=QTableWidgetItem(str(i.admin_id))
+            art=QTableWidgetItem(str(i.created_in))
+            price=QTableWidgetItem(str(i.status))
+            cnt=QTableWidgetItem(str(i.total_price))
             costil=i.id
-
             self.table.setItem(costil,0,id)
             self.table.setItem(costil,1,sell_id)
             self.table.setItem(costil,2,name)
             self.table.setItem(costil,3,art)
             self.table.setItem(costil,4,price)
             self.table.setItem(costil,5,cnt)
-
-                
-
-    
-
-    def filtr(self):
-        self.communication = Communicate()
+    # def filtr(self):
+    #     self.communication = Communicate()
+    #     self.filtr_window=Filter_window(select_fu=self.items_fu,communication=self.communication)
+    #     self.communication.signal.connect(self.update_label)
+    #     self.filtr_window.show()
+    # def update_label(self, message):
+    #     message=message.split('%')
+    #     print(message)
+    #     self.fill(self.items_fu(message[0],None,message[3],message[2],message[1]))
+    #     #self,id=None,seller_id=None,article=None,price=None,name=None
+    # def remove(self):
+    #     pass
+    # def select(self):
+    #     print(self.select_fu()[0])
         
-        self.filtr_window=Filter_window(select_fu=self.items_fu,communication=self.communication)
-        self.communication.signal.connect(self.update_label)
-        self.filtr_window.show()
-        
-
-    def update_label(self, message):
-        message=message.split('%')
-        print(message)
-        self.fill(self.items_fu(message[0],None,message[3],message[2],message[1]))
-        #self,id=None,seller_id=None,article=None,price=None,name=None
-        
-    def remove(self):
-        pass
-    def select(self):
-        print(self.select_fu()[0])
-        
-    def show_table(self,data):
-        pass
+    # def show_table(self,data):
+    #     pass
 
         
