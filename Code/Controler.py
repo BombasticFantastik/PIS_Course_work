@@ -24,18 +24,8 @@ Fasade=AlchFacade(engine,session)
 # Fasade.add(item1)
 # Fasade.add(item2)
 
-
 app = QApplication(sys.argv)
-window = add_window()
+window = Admin_Cat(Fasade.get_items,Fasade.get_orders,Fasade.get_users,Fasade.get_order_items,Fasade.add,Fasade.delete,Fasade.create_order_item)
 window.show()
 sys.exit(app.exec())
 
-# app = QApplication(sys.argv)
-# window = Selected_Order_window(Fasade.get_items,Fasade.get_orders,Fasade.get_users,Fasade.get_order_items,Fasade.add,Fasade.delete)
-# window.show()
-# sys.exit(app.exec())
-
-# app = QApplication(sys.argv)
-# window = Admin_Orders_window(Fasade.get_items,Fasade.get_orders,Fasade.get_users,Fasade.add,Fasade.delete)
-# window.show()
-# sys.exit(app.exec())

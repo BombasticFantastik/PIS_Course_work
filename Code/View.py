@@ -6,7 +6,7 @@ class Communicate(QObject):
         signal = pyqtSignal(str)
 
 class Admin_Cat(QWidget):
-    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu):
         self.items_fu=items_fu
         self.orders_fu=orders_fu
         self.users_fu=users_fu
@@ -14,6 +14,7 @@ class Admin_Cat(QWidget):
         self.order_items_fu=order_items_fu
         self.add_fu=add_fu
         self.del_fu=del_fu
+        self.create_order_item_fu=create_order_item_fu
         
         super().__init__()
         
@@ -59,7 +60,7 @@ class Admin_Cat(QWidget):
         #кнопки
         self.button_filtr.clicked.connect(self.filtr)
         self.button_orders.clicked.connect(self.orders)
-        self.button_add.clicked.connect(self.add)
+        self.button_add.clicked.connect(self.show_add_window)
 
 
         main_layout = QHBoxLayout()
@@ -129,9 +130,19 @@ class Admin_Cat(QWidget):
         self.filtr_window.show()
         pass
 
-    def add(self):
-    
-        pass
+
+    def add_to_order(self,message):
+        selected_item=self.items_fu(id=self.id_select.text())
+        selected_item=selected_item[0]
+        self.create_order_item_fu(item_id=selected_item.id,order_id=2,count=int(message))#убрать
+    def show_add_window(self):
+        selected_item=self.items_fu(id=self.id_select)
+        self.communication = Communicate()
+        self.filtr_window=add_window(self.communication)
+        self.communication.signal.connect(self.add_to_order)
+        self.filtr_window.show()
+        
+
 
 
 class Filter_window(QWidget):
@@ -266,8 +277,9 @@ class Admin_Orders_window(QWidget):
 
 class add_window(QWidget):
     
-    def __init__(self):
+    def __init__(self,communication):
         super().__init__()
+        self.com=communication
         #self.select_fu=
         
 
@@ -300,7 +312,7 @@ class add_window(QWidget):
         self.setLayout(main_layout)
     def chose_count(self):
 
-        self.con.signal.emit(f'{self.seller_input.text()}%{self.name_input.text()}%{self.price_input.text()}%{self.art_input.text()}')
+        self.com.signal.emit(str(self.count_input.text()))
 
 
 class Selected_Order_window(QWidget):
