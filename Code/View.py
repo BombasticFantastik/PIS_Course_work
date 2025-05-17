@@ -11,6 +11,7 @@ class Admin_Cat(QWidget):
         self.orders_fu=orders_fu
         self.users_fu=users_fu
         self.orders_fu=orders_fu
+        self.order_items_fu=order_items_fu
         self.add_fu=add_fu
         self.del_fu=del_fu
         
@@ -19,7 +20,7 @@ class Admin_Cat(QWidget):
         self.setWindowTitle("Warehouse")
         self.filtr_window = None
 
-        self.setFixedSize(800,400)
+        self.setFixedSize(840,400)
 
         #table
         self.table = QTableWidget()
@@ -28,7 +29,9 @@ class Admin_Cat(QWidget):
         self.table.setColumnCount(6)
         self.fill()
 
-        
+        #id
+        self.id_select_label=QLabel('Введите Id')
+        self.id_select = QLineEdit()
 
         #Добавить/Удалить/Найти
         self.button_filtr = QPushButton("Фильтр", self)
@@ -38,13 +41,10 @@ class Admin_Cat(QWidget):
         self.button_orders.setFixedSize(170,100)  
         self.button_add.setFixedSize(170,100)     
 
-        #задаём размеры
-
-
-
-
         #левый
         left_layout = QVBoxLayout()
+        left_layout.addWidget(self.id_select_label)
+        left_layout.addWidget(self.id_select)
         left_layout.addWidget(self.button_filtr)
         left_layout.addWidget(self.button_orders)
         left_layout.addWidget(self.button_add)
@@ -58,8 +58,8 @@ class Admin_Cat(QWidget):
         table_layout.addWidget(self.table)
         #кнопки
         self.button_filtr.clicked.connect(self.filtr)
-        self.button_orders.clicked.connect(self.remove)
-        self.button_add.clicked.connect(self.select)
+        self.button_orders.clicked.connect(self.orders)
+        self.button_add.clicked.connect(self.add)
 
 
         main_layout = QHBoxLayout()
@@ -106,10 +106,6 @@ class Admin_Cat(QWidget):
             self.table.setItem(costil,4,price)
             self.table.setItem(costil,5,cnt)
 
-                
-
-    
-
     def filtr(self):
         self.communication = Communicate()
         
@@ -126,10 +122,15 @@ class Admin_Cat(QWidget):
         
     def remove(self):
         pass
-    def select(self):
-        print(self.select_fu()[0])
         
-    def show_table(self,data):
+    def orders(self,data):
+        #self.communication = Communicate()
+        self.filtr_window=Selected_Order_window(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu)
+        self.filtr_window.show()
+        pass
+
+    def add(self):
+    
         pass
 
 
@@ -263,7 +264,44 @@ class Admin_Orders_window(QWidget):
     def go_to_ord_func(self):
         pass
 
+class add_window(QWidget):
+    
+    def __init__(self):
+        super().__init__()
+        #self.select_fu=
         
+
+        #labels
+        self.count_label=QLabel('Выберите количество товара')
+
+        #inputs
+        self.count_input=QLineEdit()
+
+        #labels_layout
+        labels_layout = QVBoxLayout()
+        labels_layout.addWidget(self.count_label)
+        labels_layout.addWidget(self.count_input)
+        
+        #inputs_labels
+        input_layout=QVBoxLayout()
+        #input_layout.addWidget(self.seller_input)
+
+        #button
+        self.add_button=QPushButton("Добавить")
+        self.add_button.clicked.connect(self.chose_count)
+        self.add_button.setFixedSize(150,75)
+        input_layout.addWidget(self.add_button)
+
+        
+
+        main_layout = QHBoxLayout()
+        main_layout.addLayout(labels_layout)
+        main_layout.addLayout(input_layout)
+        self.setLayout(main_layout)
+    def chose_count(self):
+
+        self.con.signal.emit(f'{self.seller_input.text()}%{self.name_input.text()}%{self.price_input.text()}%{self.art_input.text()}')
+
 
 class Selected_Order_window(QWidget):
     def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu):
