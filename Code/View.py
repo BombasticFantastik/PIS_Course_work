@@ -52,7 +52,7 @@ class Admin_Cat(QWidget):
         #table
         table_layout = QVBoxLayout()
         table_layout.addWidget(self.table)
-        #кнопки
+        #конект
         self.button_filtr.clicked.connect(self.show_filtr_window)
         self.button_orders.clicked.connect(self.show_orders_window)
         self.button_add.clicked.connect(self.show_add_window)
@@ -346,23 +346,28 @@ class Selected_Order_window(QWidget):
         #left
         self.id_select_label=QLabel('Введите Id')
         self.id_select = QLineEdit()
-        self.remove_detail=QPushButton('Удалить товар с \n с выбранным Id',self)
-        self.remove_order=QPushButton('Отменить \n заказ',self)
-        self.accept_order=QPushButton('Одобрить \n заказ',self)
+        self.remove_detail_button=QPushButton('Удалить товар с \n с выбранным Id',self)
+        self.cancel_order_button=QPushButton('Отменить \n заказ',self)
+        self.accept_order_button=QPushButton('Одобрить \n заказ',self)
         self.id_select_label.setFixedSize(200,10)
         self.id_select.setFixedSize(200,50)
-        self.remove_detail.setFixedSize(200,100)
-        self.remove_order.setFixedSize(200,100)
-        self.accept_order.setFixedSize(200,100)
+        self.remove_detail_button.setFixedSize(200,100)
+        self.cancel_order_button.setFixedSize(200,100)
+        self.accept_order_button.setFixedSize(200,100)
+
+                #конект
+        self.remove_detail_button.clicked.connect(self.remove_item)
+        self.cancel_order_button.clicked.connect(self.cancel_order)
+        self.accept_order_button.clicked.connect(self.accept_order)
 
         
         #left_layout
         left_layout = QVBoxLayout()
         left_layout.addWidget(self.id_select_label)
         left_layout.addWidget(self.id_select)
-        left_layout.addWidget(self.remove_detail)
-        left_layout.addWidget(self.remove_order)
-        left_layout.addWidget(self.accept_order)
+        left_layout.addWidget(self.remove_detail_button)
+        left_layout.addWidget(self.cancel_order_button)
+        left_layout.addWidget(self.accept_order_button)
 
         #table
         table_layout = QVBoxLayout()
@@ -395,3 +400,10 @@ class Selected_Order_window(QWidget):
             self.table.setItem(j,1,item_id)
             self.table.setItem(j,2,sell_id)
             self.table.setItem(j,3,cnt)
+    def remove_item(self):
+        self.del_fu(self.order_items_fu(id=self.id_select.text())[0])
+        self.fill()
+    def cancel_order(self):
+        pass
+    def accept_order(self):
+        pass
