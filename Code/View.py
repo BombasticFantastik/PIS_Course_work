@@ -126,7 +126,7 @@ class Admin_Cat(QWidget):
         
     def orders(self,data):
         #self.communication = Communicate()
-        self.filtr_window=Selected_Order_window(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu)
+        self.filtr_window=Admin_Orders_window(self.items_fu,self.orders_fu,self.users_fu,self.add_fu,self.del_fu)
         self.filtr_window.show()
         pass
 
@@ -134,17 +134,18 @@ class Admin_Cat(QWidget):
     def add_to_order(self,message):
         selected_item=self.items_fu(id=self.id_select.text())
         selected_item=selected_item[0]
-        self.create_order_item_fu(item_id=selected_item.id,order_id=2,count=int(message))#убрать
+        if self.create_order_item_fu(item_id=selected_item.id,order_id=1,count=int(message)):#убрать
+            pass
+        else:
+            self.waring=warning_window('Выбранное количиство товара превышает доступный для покупки')
+            self.waring.show()
+        
     def show_add_window(self):
-        selected_item=self.items_fu(id=self.id_select)
         self.communication = Communicate()
         self.filtr_window=add_window(self.communication)
         self.communication.signal.connect(self.add_to_order)
         self.filtr_window.show()
         
-
-
-
 class Filter_window(QWidget):
     
     def __init__(self,select_fu,communication):
@@ -313,6 +314,14 @@ class add_window(QWidget):
     def chose_count(self):
 
         self.com.signal.emit(str(self.count_input.text()))
+
+class warning_window(QWidget):
+    def __init__(self,message):
+        super().__init__()
+        self.warhing_label=QLabel(message)
+        main_layout = QVBoxLayout()
+        main_layout.addWidget(self.warhing_label)
+        self.setLayout(main_layout)
 
 
 class Selected_Order_window(QWidget):

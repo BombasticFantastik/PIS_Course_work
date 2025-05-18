@@ -72,8 +72,13 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
 
     def create_order_item(self,item_id,order_id,count):
         selected_item=self.get_items(id=item_id)[0]
-        selected_item.count-=count
-        self.add(Order_Item(item_id=item_id,order_id=order_id,count=count))
+        if selected_item.count<count:
+            print(selected_item.count)
+            return False
+        else:
+            selected_item.count-=count
+            self.add(Order_Item(item_id=item_id,order_id=order_id,count=count))
+            return True
 
     # def cancel_changes(self):
     #     self.session.rollback()

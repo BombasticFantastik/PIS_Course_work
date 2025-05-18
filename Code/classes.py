@@ -49,8 +49,9 @@ class Order(Base):
     
 class Order_Item(Base):
     __tablename__='order_items'
-    item_id=Column(Integer,primary_key=True)
-    order_id=Column(Integer,primary_key=True)
+    id=Column(Integer,autoincrement=True,primary_key=True)
+    item_id=Column(Integer)
+    order_id=Column(Integer)
     count=Column(Integer)
 
-#Base.metadata.create_all(engine)   
+Base.metadata.create_all(engine)   
