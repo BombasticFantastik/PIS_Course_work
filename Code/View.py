@@ -204,7 +204,7 @@ class Admin_Orders_window(QWidget):
         self.setWindowTitle("Ваши заказы")
         self.filtr_window = None
 
-        self.setFixedSize(900,400)
+        self.setFixedSize(900,250)
 
         #table
         self.table = QTableWidget()
@@ -217,7 +217,7 @@ class Admin_Orders_window(QWidget):
         self.id_select_label=QLabel('Введите Id')
         self.id_select = QLineEdit()
         self.go_to_order_button=QPushButton('Перейти к заказу \n с выбранным Id',self)
-        self.id_select_label.setFixedSize(200,10)
+        self.id_select_label.setFixedSize(250,15)
         self.id_select.setFixedSize(200,50)
         self.go_to_order_button.setFixedSize(200,100)
 
@@ -319,8 +319,6 @@ class warning_window(QWidget):
         main_layout.addWidget(self.warhing_label)
         self.setLayout(main_layout)
         
-
-
 class Selected_Order_window(QWidget):
     def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,number_of_order):
         self.items_fu=items_fu
@@ -336,14 +334,14 @@ class Selected_Order_window(QWidget):
         self.setWindowTitle("Детали вашего заказа")
         #self.filtr_window = None
 
-        self.setFixedSize(560,400)
+        self.setFixedSize(760,400)
 
         #table
         self.table = QTableWidget()
-        self.table.setFixedSize(350,387)
+        self.table.setFixedSize(450,387)
         self.table.setRowCount(25)
-        self.table.setColumnCount(3)
-        #self.fill()#sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+        self.table.setColumnCount(4)
+        self.fill()#sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 
         #left
         self.id_select_label=QLabel('Введите Id')
@@ -377,21 +375,23 @@ class Selected_Order_window(QWidget):
         self.setLayout(main_layout)
 
     def fill(self,order_items=None):
+
         self.table.clear()
         self.table.setHorizontalHeaderLabels([
+            'id',
             'item_id',
             'order_id',
             'count',
         ])
         if order_items==None:
-            order_items=self.order_items_fu(id=self.number_of_order)
+            order_items=self.order_items_fu(order_id=self.number_of_order)
         for j,i in enumerate(order_items):
+            idd=QTableWidgetItem(str(i.id))
             item_id=QTableWidgetItem(str(i.item_id))
             sell_id=QTableWidgetItem(str(i.order_id))
             cnt=QTableWidgetItem(str(i.count))
             costil=1
-            self.table.setItem(j,0,item_id)
-            self.table.setItem(j,1,sell_id)
-            self.table.setItem(j,2,cnt)
-    # def go_to_ord_func(self):
-    #     pass
+            self.table.setItem(j,0,idd)
+            self.table.setItem(j,1,item_id)
+            self.table.setItem(j,2,sell_id)
+            self.table.setItem(j,3,cnt)

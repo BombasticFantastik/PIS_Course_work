@@ -53,13 +53,13 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
     def get_order_items(self,id=None,item_id=None,order_id=None,cnt=None):
         selected_order_items=self.session.query(Order_Item)
         if id:
-            selected_order_items=selected_order_items.filter_by(id)
+            selected_order_items=selected_order_items.filter_by(id=id)
         if item_id:
-            selected_order_items=selected_order_items.filter_by(item_id)
+            selected_order_items=selected_order_items.filter_by(item_id=item_id)
         if order_id:
-            selected_order_items=selected_order_items.filter_by(order_id)
+            selected_order_items=selected_order_items.filter_by(order_id=order_id)
         if cnt:
-            selected_order_items=selected_order_items.filter_by(cnt)
+            selected_order_items=selected_order_items.filter_by(count=cnt)
         return selected_order_items
 
     def add(self,object):
