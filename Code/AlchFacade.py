@@ -50,8 +50,10 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
             selected_orders=selected_orders.filter_by(created_in=created_in)
         return selected_orders
     
-    def get_order_items(self,item_id=None,order_id=None,cnt=None):
+    def get_order_items(self,id=None,item_id=None,order_id=None,cnt=None):
         selected_order_items=self.session.query(Order_Item)
+        if id:
+            selected_order_items=selected_order_items.filter_by(id)
         if item_id:
             selected_order_items=selected_order_items.filter_by(item_id)
         if order_id:

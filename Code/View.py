@@ -15,11 +15,10 @@ class Admin_Cat(QWidget):
         self.add_fu=add_fu
         self.del_fu=del_fu
         self.create_order_item_fu=create_order_item_fu
-        
         super().__init__()
-        
-        self.setWindowTitle("Warehouse")
+        self.setWindowTitle("Главное окно администратора")
         self.filtr_window = None
+       
 
         self.setFixedSize(840,400)
 
@@ -50,16 +49,12 @@ class Admin_Cat(QWidget):
         left_layout.addWidget(self.button_orders)
         left_layout.addWidget(self.button_add)
 
-
-        
-        
-
         #table
         table_layout = QVBoxLayout()
         table_layout.addWidget(self.table)
         #кнопки
-        self.button_filtr.clicked.connect(self.filtr)
-        self.button_orders.clicked.connect(self.orders)
+        self.button_filtr.clicked.connect(self.show_filtr_window)
+        self.button_orders.clicked.connect(self.show_orders_window)
         self.button_add.clicked.connect(self.show_add_window)
 
 
@@ -68,15 +63,7 @@ class Admin_Cat(QWidget):
         main_layout.addLayout(table_layout)
         self.setLayout(main_layout)
 
-
-
-
-
-
-        self.filttred_text=None
-
-
-
+    #заполнение данных в таблицу
     def fill(self,items=None):
         self.table.clear()
         self.table.setHorizontalHeaderLabels([
@@ -107,30 +94,37 @@ class Admin_Cat(QWidget):
             self.table.setItem(costil,4,price)
             self.table.setItem(costil,5,cnt)
 
-    def filtr(self):
+    #окно фильтра
+    def show_filtr_window(self):
+
         self.communication = Communicate()
         
         self.filtr_window=Filter_window(select_fu=self.items_fu,communication=self.communication)
-        self.communication.signal.connect(self.update_label)
+        self.communication.signal.connect(self.filtr_data)
         self.filtr_window.show()
         
-
-    def update_label(self, message):
+    #фильтрация
+    def filtr_data(self, message):
         message=message.split('%')
         print(message)
         self.fill(self.items_fu(message[0],None,message[3],message[2],message[1]))
-        #self,id=None,seller_id=None,article=None,price=None,name=None
-        
+
+    #удалить        
     def remove(self):
         pass
+    #открыть окно заказов   
+
+    def show_selected_order_window(self,message):
+        self.filtr_window.close()
         
-    def orders(self,data):
-        #self.communication = Communicate()
-        self.filtr_window=Admin_Orders_window(self.items_fu,self.orders_fu,self.users_fu,self.add_fu,self.del_fu)
-        self.filtr_window.show()
-        pass
+        print(1)
 
 
+    def show_orders_window(self,data):
+        self.order_window=Admin_Orders_window(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu)
+        self.order_window.show()
+
+    #добавить товар в заказ
     def add_to_order(self,message):
         selected_item=self.items_fu(id=self.id_select.text())
         selected_item=selected_item[0]
@@ -139,7 +133,8 @@ class Admin_Cat(QWidget):
         else:
             self.waring=warning_window('Выбранное количиство товара превышает доступный для покупки')
             self.waring.show()
-        
+            self.fill()
+    #показать окно добавления
     def show_add_window(self):
         self.communication = Communicate()
         self.filtr_window=add_window(self.communication)
@@ -193,14 +188,14 @@ class Filter_window(QWidget):
         main_layout.addLayout(input_layout)
         self.setLayout(main_layout)
     def filtr(self):
-
         self.con.signal.emit(f'{self.seller_input.text()}%{self.name_input.text()}%{self.price_input.text()}%{self.art_input.text()}')
 
 class Admin_Orders_window(QWidget):
-    def __init__(self,items_fu,orders_fu,users_fu,add_fu,del_fu):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu):
         self.items_fu=items_fu
         self.orders_fu=orders_fu
         self.users_fu=users_fu
+        self.order_items_fu=order_items_fu
         self.add_fu=add_fu
         self.del_fu=del_fu
         
@@ -221,22 +216,22 @@ class Admin_Orders_window(QWidget):
         #left
         self.id_select_label=QLabel('Введите Id')
         self.id_select = QLineEdit()
-        self.go_to_order=QPushButton('Перейти к заказу \n с выбранным Id',self)
+        self.go_to_order_button=QPushButton('Перейти к заказу \n с выбранным Id',self)
         self.id_select_label.setFixedSize(200,10)
         self.id_select.setFixedSize(200,50)
-        self.go_to_order.setFixedSize(200,100)
+        self.go_to_order_button.setFixedSize(200,100)
 
         
         #left_layout
         left_layout = QVBoxLayout()
         left_layout.addWidget(self.id_select_label)
         left_layout.addWidget(self.id_select)
-        left_layout.addWidget(self.go_to_order)
+        left_layout.addWidget(self.go_to_order_button)
 
         #table
         table_layout = QVBoxLayout()
         table_layout.addWidget(self.table)
-        self.go_to_order.clicked.connect(self.go_to_ord_func)
+        self.go_to_order_button.clicked.connect(self.go_to_order)
 
         #main
         main_layout = QHBoxLayout()
@@ -273,8 +268,9 @@ class Admin_Orders_window(QWidget):
             self.table.setItem(costil,3,art)
             self.table.setItem(costil,4,price)
             self.table.setItem(costil,5,cnt)
-    def go_to_ord_func(self):
-        pass
+    def go_to_order(self):
+        self.selected_order_window=Selected_Order_window(items_fu=self.items_fu,orders_fu=self.orders_fu,users_fu=self.users_fu,order_items_fu=self.order_items_fu,add_fu=self.add_fu,del_fu=self.del_fu,number_of_order=self.id_select.text())
+        self.selected_order_window.show()
 
 class add_window(QWidget):
     
@@ -322,16 +318,18 @@ class warning_window(QWidget):
         main_layout = QVBoxLayout()
         main_layout.addWidget(self.warhing_label)
         self.setLayout(main_layout)
+        
 
 
 class Selected_Order_window(QWidget):
-    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,number_of_order):
         self.items_fu=items_fu
         self.orders_fu=orders_fu
         self.users_fu=users_fu
         self.order_items_fu=order_items_fu
         self.add_fu=add_fu
         self.del_fu=del_fu
+        self.number_of_order=number_of_order
         
         super().__init__()
         
@@ -345,7 +343,7 @@ class Selected_Order_window(QWidget):
         self.table.setFixedSize(350,387)
         self.table.setRowCount(25)
         self.table.setColumnCount(3)
-        self.fill()
+        #self.fill()#sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 
         #left
         self.id_select_label=QLabel('Введите Id')
@@ -371,16 +369,12 @@ class Selected_Order_window(QWidget):
         #table
         table_layout = QVBoxLayout()
         table_layout.addWidget(self.table)
-        #self.go_to_order.clicked.connect(self.go_to_ord_func)
 
         #main
         main_layout = QHBoxLayout()
         main_layout.addLayout(left_layout)
         main_layout.addLayout(table_layout)
         self.setLayout(main_layout)
-        #self.filttred_text=None
-
-
 
     def fill(self,order_items=None):
         self.table.clear()
@@ -390,8 +384,7 @@ class Selected_Order_window(QWidget):
             'count',
         ])
         if order_items==None:
-            order_items=self.order_items_fu()
-        print(order_items)
+            order_items=self.order_items_fu(id=self.number_of_order)
         for j,i in enumerate(order_items):
             item_id=QTableWidgetItem(str(i.item_id))
             sell_id=QTableWidgetItem(str(i.order_id))
@@ -400,5 +393,5 @@ class Selected_Order_window(QWidget):
             self.table.setItem(j,0,item_id)
             self.table.setItem(j,1,sell_id)
             self.table.setItem(j,2,cnt)
-    def go_to_ord_func(self):
-        pass
+    # def go_to_ord_func(self):
+    #     pass
