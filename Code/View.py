@@ -5,6 +5,72 @@ from PyQt6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayo
 class Communicate(QObject):
         signal = pyqtSignal(str)
 
+
+class Login_window(QWidget):
+    
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu):
+        super().__init__()
+
+        self.setWindowTitle("Окно входа")
+        
+        #закрепляем 
+        self.items_fu=items_fu
+        self.orders_fu=orders_fu
+        self.users_fu=users_fu
+        self.orders_fu=orders_fu
+        self.order_items_fu=order_items_fu
+        self.add_fu=add_fu
+        self.del_fu=del_fu
+        self.create_order_item_fu=create_order_item_fu
+        
+
+        
+        self.seller_label=QLabel('Логин')
+        self.name_label=QLabel('Пароль')
+
+        #inputs
+        self.login_input=QLineEdit()
+        self.password_input=QLineEdit()
+
+        #labels_layout
+        labels_layout = QVBoxLayout()
+        labels_layout.addWidget(self.seller_label)
+        labels_layout.addWidget(self.name_label)
+
+        #inputs_labels
+        input_layout=QVBoxLayout()
+        input_layout.addWidget(self.login_input)
+        input_layout.addWidget(self.password_input)
+
+        #button
+        self.enter_button=QPushButton("Войти")
+        self.enter_button.setFixedSize(120,90)
+        self.enter_button.clicked.connect(self.log_in)
+        
+
+        main_layout = QHBoxLayout()
+        main_layout.addLayout(labels_layout)
+        main_layout.addLayout(input_layout)
+        main_layout.addWidget(self.enter_button)
+        self.setLayout(main_layout)
+    def log_in(self):
+        selected_user=self.users_fu(login=self.login_input.text(),password_hash=self.password_input.text())
+        
+        if selected_user[0].login==self.login_input.text() and selected_user[0].password_hash==self.password_input.text():
+            #Админ
+            if selected_user[0].Status=='Aдминистратор':#??????????? как я мог себе это позволить ?
+                self.admin_cat_window=Admin_Cat(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu,self.create_order_item_fu)
+                self.admin_cat_window.show()
+                self.close()
+            #Поставщик
+            else:
+                pass
+        else:
+            pass
+
+        
+
+
 class Admin_Cat(QWidget):
     def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu):
         self.items_fu=items_fu
@@ -404,6 +470,7 @@ class Selected_Order_window(QWidget):
         self.del_fu(self.order_items_fu(id=self.id_select.text())[0])
         self.fill()
     def cancel_order(self):
-        pass
+        self.del_fu(self.orders_fu(id=self.number_of_order)[0])
+        self.close()
     def accept_order(self):
         pass

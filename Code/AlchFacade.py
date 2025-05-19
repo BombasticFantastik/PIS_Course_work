@@ -5,12 +5,16 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
     def __init__(self,engine,session):
         self.engine=engine
         self.session=session
-    def get_users(self,id=None,status=None,INN=None,legal_entity=None,address=None):
+    def get_users(self,id=None,status=None,login=None,password_hash=None,INN=None,legal_entity=None,address=None):
         selected_users=self.session.query(User)
         if id:
             selected_users=selected_users.filter_by(id=id)
         if status:
             selected_users=selected_users.filter_by(article=status)
+        if login:
+            selected_users=selected_users.filter_by(login=login)
+        if password_hash:
+            selected_users=selected_users.filter_by(password_hash=password_hash)
         if INN:
             selected_users=selected_users.filter_by(INN=INN)
         if legal_entity:
