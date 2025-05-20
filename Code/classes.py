@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine,Column,Integer,String,Float,Date
+from sqlalchemy import create_engine,Column,Integer,String,Float,Date,BigInteger
 import psycopg2
 import abc
 from sqlalchemy.orm import sessionmaker
@@ -20,7 +20,7 @@ Base=declarative_base()
 class Item(Base):
     __tablename__='items'
     
-    id=Column(Integer,primary_key=True)
+    id=Column(Integer,autoincrement=True,primary_key=True)
     seller_id=Column(Integer)
     name=Column(String)
     article=Column(Integer)
@@ -32,8 +32,8 @@ class User(Base):
     id=Column(Integer,primary_key=True)
     Status=Column(String)
     login=Column(String)
-    password_hash=Column(String)
-    INN=Column(Integer)
+    password=Column(String)
+    INN=Column(BigInteger)
     legal_entity=Column(String)
     address=Column(String)
     registred_in=Column(Date)

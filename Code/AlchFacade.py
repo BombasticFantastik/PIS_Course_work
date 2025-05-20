@@ -5,7 +5,7 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
     def __init__(self,engine,session):
         self.engine=engine
         self.session=session
-    def get_users(self,id=None,status=None,login=None,password_hash=None,INN=None,legal_entity=None,address=None):
+    def get_users(self,id=None,status=None,login=None,password=None,INN=None,legal_entity=None,address=None):
         selected_users=self.session.query(User)
         if id:
             selected_users=selected_users.filter_by(id=id)
@@ -13,8 +13,8 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
             selected_users=selected_users.filter_by(article=status)
         if login:
             selected_users=selected_users.filter_by(login=login)
-        if password_hash:
-            selected_users=selected_users.filter_by(password_hash=password_hash)
+        if password:
+            selected_users=selected_users.filter_by(password=password)
         if INN:
             selected_users=selected_users.filter_by(INN=INN)
         if legal_entity:
@@ -79,12 +79,15 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
     def create_order_item(self,item_id,order_id,count):
         selected_item=self.get_items(id=item_id)[0]
         if selected_item.count<count:
-            print(selected_item.count)
             return False
         else:
             selected_item.count-=count
             self.add(Order_Item(item_id=item_id,order_id=order_id,count=count))
             return True
+
+
+    def create_item(self,seller_id,name,article,price,count):
+        self.add(Item(seller_id=seller_id,name=name,article=article,price=price,count=count))
 
     # def cancel_changes(self):
     #     self.session.rollback()
