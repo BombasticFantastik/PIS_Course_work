@@ -54,6 +54,24 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
             selected_orders=selected_orders.filter_by(created_in=created_in)
         return selected_orders
     
+    def order_user_join(self,id=None,seller_id=None,admin_id=None,created_in=None, status=None,total_price=None):
+        selected_orders=self.session.query(Order,User)
+        
+        if id:
+            selected_orders=selected_orders.filter_by(id=id)
+        if seller_id:
+            selected_orders=selected_orders.filter_by(seller_id=seller_id)
+        if admin_id:
+            selected_orders=selected_orders.filter_by(admin_id=admin_id)
+        if created_in:
+            selected_orders=selected_orders.filter_by(created_in=created_in)
+        if status:
+            selected_orders=selected_orders.filter_by(status=status)
+        if created_in:
+            selected_orders=selected_orders.filter_by(created_in=created_in)
+        selected_orders=selected_orders.join(User,Order.admin_id==User.id)
+        return selected_orders
+    
     def get_order_items(self,id=None,item_id=None,order_id=None,cnt=None):
         selected_order_items=self.session.query(Order_Item)
         if id:

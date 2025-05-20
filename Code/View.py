@@ -8,7 +8,7 @@ class Communicate(QObject):
 
 class Login_window(QWidget):
     
-    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu,save_fu,create_item_fu):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu,save_fu,create_item_fu,order_user_join):
         super().__init__()
 
         self.setWindowTitle("Окно входа")
@@ -24,6 +24,7 @@ class Login_window(QWidget):
         self.create_order_item_fu=create_order_item_fu
         self.save_fu=save_fu
         self.create_item_fu=create_item_fu
+        self.order_user_join=order_user_join
         
 
         
@@ -68,7 +69,7 @@ class Login_window(QWidget):
             #Поставщик
             else:
                 
-                self.seller_cat_window=Seller_Cat(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu,self.create_order_item_fu,self.save_fu,self.create_item_fu,selected_user[0].id)
+                self.seller_cat_window=Seller_Cat(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu,self.create_order_item_fu,self.save_fu,self.create_item_fu,selected_user[0].id,self.order_user_join)
                 self.seller_cat_window.show()
                 self.close()
         else:
@@ -490,7 +491,7 @@ class Selected_Order_window(QWidget):
 #__________________________________sellers______________________________________________________:
 
 class Seller_Cat(QWidget):
-    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu,save_fu,create_item_fu,seller_id):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu,save_fu,create_item_fu,seller_id,order_user_join):
         self.items_fu=items_fu
         self.orders_fu=orders_fu
         self.users_fu=users_fu
@@ -502,6 +503,7 @@ class Seller_Cat(QWidget):
         self.save_fu=save_fu
         self.create_item_fu=create_item_fu
         self.seller_id=seller_id
+        self.order_user_join=order_user_join
         super().__init__()
         self.setWindowTitle("Главное окно поставщика")
         self.filtr_window = None
@@ -603,7 +605,7 @@ class Seller_Cat(QWidget):
 
 
     def show_orders_window(self,data):
-        self.order_window=Seller_orders_window(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu,self.seller_id)
+        self.order_window=Seller_orders_window(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu,self.seller_id,self.order_user_join)
         self.order_window.show()
 
     #добавить товар
@@ -741,7 +743,7 @@ class Seller_add_window(QWidget):
 
 
 class Seller_orders_window(QWidget):
-    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,seller_id):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,seller_id,join_fu):
         self.items_fu=items_fu
         self.orders_fu=orders_fu
         self.users_fu=users_fu
@@ -749,19 +751,20 @@ class Seller_orders_window(QWidget):
         self.add_fu=add_fu
         self.del_fu=del_fu
         self.seller_id=seller_id
+        self.join_fu=join_fu
         
         super().__init__()
         
         self.setWindowTitle("Ваши заказы")
         self.filtr_window = None
 
-        self.setFixedSize(900,250)
+        self.setFixedSize(800,250)
 
         #table
         self.table = QTableWidget()
         self.table.setFixedSize(655,387)
         self.table.setRowCount(25)
-        self.table.setColumnCount(6)
+        self.table.setColumnCount(5)
         self.fill()
 
         #left
@@ -797,28 +800,25 @@ class Seller_orders_window(QWidget):
         self.table.clear()
         self.table.setHorizontalHeaderLabels([
             'id',
-            'seller_id',
-            'admin_id',
-            'created_in',
+            'admin',
+            'total price',
             'status',
-            'total_price',
+            'address',
         ])
         if orders==None:
-            orders=self.orders_fu(seller_id=self.seller_id)
+            orders=self.join_fu(seller_id=self.seller_id)
         costil=0
         for i in orders:
-            id=QTableWidgetItem(str(i.id))
-            sell_id=QTableWidgetItem(str(i.seller_id))
-            name=QTableWidgetItem(str(i.admin_id))
-            art=QTableWidgetItem(str(i.created_in))
-            price=QTableWidgetItem(str(i.status))
-            cnt=QTableWidgetItem(str(i.total_price))
+            id=QTableWidgetItem(str(i[0].id))
+            admin_name=QTableWidgetItem(str(i[1].legal_entity))
+            total_price=QTableWidgetItem(str(i[0].total_price))
+            status=QTableWidgetItem(str(i[0].status))
+            address=QTableWidgetItem(str(i[1].address))
             self.table.setItem(costil,0,id)
-            self.table.setItem(costil,1,sell_id)
-            self.table.setItem(costil,2,name)
-            self.table.setItem(costil,3,art)
-            self.table.setItem(costil,4,price)
-            self.table.setItem(costil,5,cnt)
+            self.table.setItem(costil,1,admin_name)
+            self.table.setItem(costil,2,total_price)
+            self.table.setItem(costil,3,status)
+            self.table.setItem(costil,4,address)
             costil+=1
     def go_to_order(self):
         self.selected_order_window=Selected_Sellers_order_window(items_fu=self.items_fu,orders_fu=self.orders_fu,users_fu=self.users_fu,order_items_fu=self.order_items_fu,add_fu=self.add_fu,del_fu=self.del_fu,number_of_order=self.id_select.text())
