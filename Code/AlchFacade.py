@@ -73,6 +73,19 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
         return selected_orders
     
     def get_order_items(self,id=None,item_id=None,order_id=None,cnt=None):
+        selected_order_items=self.session.query(Order_Item,Item)
+        if id:
+            selected_order_items=selected_order_items.filter_by(id=id)
+        if item_id:
+            selected_order_items=selected_order_items.filter_by(item_id=item_id)
+        if order_id:
+            selected_order_items=selected_order_items.filter_by(order_id=order_id)
+        if cnt:
+            selected_order_items=selected_order_items.filter_by(count=cnt)
+        selected_orders=selected_orders.join(Order_Item,Item.id==Order_Item.item_id)
+        return selected_order_items
+    
+    def get_order_items_items_join(self,id=None,item_id=None,order_id=None,cnt=None):
         selected_order_items=self.session.query(Order_Item)
         if id:
             selected_order_items=selected_order_items.filter_by(id=id)
@@ -83,6 +96,8 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
         if cnt:
             selected_order_items=selected_order_items.filter_by(count=cnt)
         return selected_order_items
+    
+    
 
     def add(self,object):
         self.session.add(object)
@@ -109,6 +124,8 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
 
     def create_item(self,seller_id,name,article,price,count):
         self.add(Item(seller_id=seller_id,name=name,article=article,price=price,count=count))
+    
+    
 
     # def cancel_changes(self):
     #     self.session.rollback()

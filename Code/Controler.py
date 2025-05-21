@@ -32,7 +32,7 @@ Fasade=AlchFacade(engine,session)
 #Seller_orders_window
 
 app = QApplication(sys.argv)
-window = Login_window(Fasade.get_items,Fasade.get_orders,Fasade.get_users,Fasade.get_order_items,Fasade.add,Fasade.delete,Fasade.create_order_item,Fasade.save,Fasade.create_item,Fasade.order_user_join,Fasade.create_order)
+window = Login_window(Fasade.get_items,Fasade.get_orders,Fasade.get_users,Fasade.get_order_items,Fasade.add,Fasade.delete,Fasade.create_order_item,Fasade.save,Fasade.create_item,Fasade.order_user_join,Fasade.create_order,Fasade.get_order_items_items_join)
 window.show()
 sys.exit(app.exec())
 

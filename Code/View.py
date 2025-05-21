@@ -9,7 +9,7 @@ class Communicate(QObject):
 
 class Login_window(QWidget):
     
-    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu,save_fu,create_item_fu,order_user_join,create_order):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu,save_fu,create_item_fu,order_user_join,create_order,get_order_items_items_join):
         super().__init__()
 
         self.setWindowTitle("Окно входа")
@@ -27,6 +27,7 @@ class Login_window(QWidget):
         self.create_item_fu=create_item_fu
         self.order_user_join=order_user_join
         self.create_order=create_order
+        self.get_order_items_items_join=get_order_items_items_join
         
         self.seller_label=QLabel('Логин')
         self.name_label=QLabel('Пароль')
@@ -63,7 +64,7 @@ class Login_window(QWidget):
             print(selected_user[0].Status)
             #Админ
             if selected_user[0].Status=='Администратор':#??????????? как я мог себе это позволить ?
-                self.admin_cat_window=Admin_Cat(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu,self.create_order_item_fu,selected_user[0].id,self.create_order)
+                self.admin_cat_window=Admin_Cat(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu,self.create_order_item_fu,selected_user[0].id,self.create_order,self.get_order_items_items_join)
                 self.admin_cat_window.show()
                 self.close()
             #Поставщик
@@ -76,7 +77,7 @@ class Login_window(QWidget):
             pass
         
 class Admin_Cat(QWidget):
-    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu,admin_id,create_order):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu,admin_id,create_order,get_order_items_items_join):
         self.items_fu=items_fu
         self.orders_fu=orders_fu
         self.users_fu=users_fu
@@ -87,6 +88,7 @@ class Admin_Cat(QWidget):
         self.create_order_item_fu=create_order_item_fu
         self.admin_id=admin_id
         self.create_order=create_order
+        self.get_order_items_items_join=get_order_items_items_join
         super().__init__()
         self.setWindowTitle("Главное окно администратора")
         self.filtr_window = None
@@ -193,7 +195,7 @@ class Admin_Cat(QWidget):
         self.filtr_window.close()
         
     def show_orders_window(self,data):
-        self.order_window=Admin_Orders_window(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu)
+        self.order_window=Admin_Orders_window(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu,self.get_order_items_items_join)
         self.order_window.show()
 
     #добавить товар в заказ
@@ -205,7 +207,7 @@ class Admin_Cat(QWidget):
             try:
                 a=self.orders_fu(seller_id=selected_item.seller_id,status='Не отправленна')
                 a[0].total_price+=selected_item.price
-                print(1)
+                
             except:
                 self.create_order(selected_item.seller_id,self.admin_id,str(datetime.datetime.now().date()),'Не отправленна',selected_item.price)
         else:
@@ -221,12 +223,14 @@ class Admin_Cat(QWidget):
 
     def which_order_should_I_make(self,item):
 
-        orders=self.orders_fu(status='Не отправленно')
+        orders=self.orders_fu(status='Не отправленна')
 
         for order in orders:
             if order.seller_id==item.seller_id:
                 return order.id
         orders_id=[i.id for i in orders]
+        if len(list(orders))==0:
+            orders_id.append(0)
         return max(orders_id)+1 
         #надо сделать что бы добавлялись
         
@@ -280,13 +284,14 @@ class Filter_window(QWidget):
         self.con.signal.emit(f'{self.seller_input.text()}%{self.name_input.text()}%{self.price_input.text()}%{self.art_input.text()}')
 
 class Admin_Orders_window(QWidget):
-    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,get_order_items_items_join):
         self.items_fu=items_fu
         self.orders_fu=orders_fu
         self.users_fu=users_fu
         self.order_items_fu=order_items_fu
         self.add_fu=add_fu
         self.del_fu=del_fu
+        self.get_order_items_items_join=get_order_items_items_join
         
         super().__init__()
         
@@ -343,6 +348,7 @@ class Admin_Orders_window(QWidget):
         ])
         if orders==None:
             orders=self.orders_fu()
+        costil=0
         for i in orders:
             id=QTableWidgetItem(str(i.id))
             sell_id=QTableWidgetItem(str(i.seller_id))
@@ -350,15 +356,16 @@ class Admin_Orders_window(QWidget):
             art=QTableWidgetItem(str(i.created_in))
             price=QTableWidgetItem(str(i.status))
             cnt=QTableWidgetItem(str(i.total_price))
-            costil=i.id
+            
             self.table.setItem(costil,0,id)
             self.table.setItem(costil,1,sell_id)
             self.table.setItem(costil,2,name)
             self.table.setItem(costil,3,art)
             self.table.setItem(costil,4,price)
             self.table.setItem(costil,5,cnt)
+            costil+=1
     def go_to_order(self):
-        self.selected_order_window=Selected_Order_window(items_fu=self.items_fu,orders_fu=self.orders_fu,users_fu=self.users_fu,order_items_fu=self.order_items_fu,add_fu=self.add_fu,del_fu=self.del_fu,number_of_order=self.id_select.text())
+        self.selected_order_window=Selected_Order_window(items_fu=self.items_fu,orders_fu=self.orders_fu,users_fu=self.users_fu,order_items_fu=self.order_items_fu,add_fu=self.add_fu,del_fu=self.del_fu,number_of_order=self.id_select.text(),get_order_items_items_join=self.get_order_items_items_join)
         self.selected_order_window.show()
 
 class add_window(QWidget):
@@ -409,7 +416,7 @@ class warning_window(QWidget):
         self.setLayout(main_layout)
         
 class Selected_Order_window(QWidget):
-    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,number_of_order):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,number_of_order,get_order_items_items_join):
         self.items_fu=items_fu
         self.orders_fu=orders_fu
         self.users_fu=users_fu
@@ -417,6 +424,7 @@ class Selected_Order_window(QWidget):
         self.add_fu=add_fu
         self.del_fu=del_fu
         self.number_of_order=number_of_order
+        self.get_order_items_items_join=get_order_items_items_join
         
         super().__init__()
         
@@ -477,17 +485,18 @@ class Selected_Order_window(QWidget):
             'order_id',
             'count',
         ])
+        
         if order_items==None:
-            order_items=self.order_items_fu(order_id=self.number_of_order)
-        for j,i in enumerate(order_items):
-            idd=QTableWidgetItem(str(i.id))
-            item_id=QTableWidgetItem(str(i.item_id))
-            sell_id=QTableWidgetItem(str(i.order_id))
-            cnt=QTableWidgetItem(str(i.count))
-            costil=1
-            self.table.setItem(j,0,idd)
-            self.table.setItem(j,1,item_id)
-            self.table.setItem(j,2,sell_id)
+            order_items_with_join=self.get_order_items_items_join(order_id=self.number_of_order)
+        for j,i in enumerate(order_items_with_join):
+            id=QTableWidgetItem(str(i[0].id))
+            art=QTableWidgetItem(str(i[1].articl))
+            price=QTableWidgetItem(str(i[1].total_price))
+            cnt=QTableWidgetItem(str(i[0].count))
+            
+            self.table.setItem(j,0,id)
+            self.table.setItem(j,1,art)
+            self.table.setItem(j,2,price)
             self.table.setItem(j,3,cnt)
     def remove_item(self):
         self.del_fu(self.order_items_fu(id=self.id_select.text())[0])
