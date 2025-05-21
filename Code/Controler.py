@@ -18,11 +18,11 @@ engine.connect()
 Session=sessionmaker(bind=engine)
 session=Session()
 Fasade=AlchFacade(engine,session)
-#item0=User(Status='Поставщик',login='NewSeller',password='14',INN=111111111121,legal_entity='Иван Иванович К.',address='Семенская 16 д. 11',registred_in='01-02-2024')
+#item0=User(Status='Поставщик',login='NewSeller15',password='14',INN=111121111121,legal_entity='Сергей Иванович К.',address='Семенская 17 д. 11',registred_in='01-02-2024')
 # item1=User(Status='Администратор',login='NewAdmin',password='14',INN=153456789112,legal_entity='Алексей Алексеевич В.',address='Волочаевская 160 д. 2',registred_in='02-02-2024')
 # item1=Item(seller_id=1,name='Радиатор Spring',article=1112,price=2500,count=15)
 #item2=Order(seller_id=1,admin_id=2,created_in='03-03-2024',status='Не отправленно',total_price=40000)
-# Fasade.add(item1)
+#Fasade.add(item0)
 # Fasade.add(item1)
 #Fasade.add(item2)
 
@@ -32,7 +32,7 @@ Fasade=AlchFacade(engine,session)
 #Seller_orders_window
 
 app = QApplication(sys.argv)
-window = Login_window(Fasade.get_items,Fasade.get_orders,Fasade.get_users,Fasade.get_order_items,Fasade.add,Fasade.delete,Fasade.create_order_item,Fasade.save,Fasade.create_item,Fasade.order_user_join)
+window = Login_window(Fasade.get_items,Fasade.get_orders,Fasade.get_users,Fasade.get_order_items,Fasade.add,Fasade.delete,Fasade.create_order_item,Fasade.save,Fasade.create_item,Fasade.order_user_join,Fasade.create_order)
 window.show()
 sys.exit(app.exec())
 

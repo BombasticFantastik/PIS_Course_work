@@ -1,5 +1,6 @@
 import sys
 from PyQt6.QtCore import pyqtSignal, QObject
+import datetime
 from PyQt6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout,QLineEdit,QTableWidget,QTableWidgetItem
 #from sqlalchemy import create_engine,Column,Integer,String,Float,Table,MetaData,insert,delete,update,text
 class Communicate(QObject):
@@ -8,7 +9,7 @@ class Communicate(QObject):
 
 class Login_window(QWidget):
     
-    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu,save_fu,create_item_fu,order_user_join):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu,save_fu,create_item_fu,order_user_join,create_order):
         super().__init__()
 
         self.setWindowTitle("Окно входа")
@@ -25,8 +26,7 @@ class Login_window(QWidget):
         self.save_fu=save_fu
         self.create_item_fu=create_item_fu
         self.order_user_join=order_user_join
-        
-
+        self.create_order=create_order
         
         self.seller_label=QLabel('Логин')
         self.name_label=QLabel('Пароль')
@@ -63,7 +63,7 @@ class Login_window(QWidget):
             print(selected_user[0].Status)
             #Админ
             if selected_user[0].Status=='Администратор':#??????????? как я мог себе это позволить ?
-                self.admin_cat_window=Admin_Cat(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu,self.create_order_item_fu,selected_user[0].id)
+                self.admin_cat_window=Admin_Cat(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu,self.create_order_item_fu,selected_user[0].id,self.create_order)
                 self.admin_cat_window.show()
                 self.close()
             #Поставщик
@@ -76,7 +76,7 @@ class Login_window(QWidget):
             pass
         
 class Admin_Cat(QWidget):
-    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu,admin_id):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu,admin_id,create_order):
         self.items_fu=items_fu
         self.orders_fu=orders_fu
         self.users_fu=users_fu
@@ -86,6 +86,7 @@ class Admin_Cat(QWidget):
         self.del_fu=del_fu
         self.create_order_item_fu=create_order_item_fu
         self.admin_id=admin_id
+        self.create_order=create_order
         super().__init__()
         self.setWindowTitle("Главное окно администратора")
         self.filtr_window = None
@@ -183,11 +184,6 @@ class Admin_Cat(QWidget):
         self.fill(self.items_fu(seller_id=message[0],name=message[1],price=message[2],article=message[3]))
         #{self.seller_input.text()}%{self.name_input.text()}%{self.price_input.text()}%{self.art_input.text()}
 
-
-
-
-
-
     #удалить        
     def remove(self):
         pass
@@ -196,9 +192,6 @@ class Admin_Cat(QWidget):
     def show_selected_order_window(self,message):
         self.filtr_window.close()
         
-
-
-
     def show_orders_window(self,data):
         self.order_window=Admin_Orders_window(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu)
         self.order_window.show()
@@ -207,8 +200,14 @@ class Admin_Cat(QWidget):
     def add_to_order(self,message):
         selected_item=self.items_fu(id=self.id_select.text())
         selected_item=selected_item[0]
-        if self.create_order_item_fu(item_id=selected_item.id,order_id=1,count=int(message)):#убрать
-            pass
+        order_id=self.which_order_should_I_make(selected_item)
+        if self.create_order_item_fu(item_id=selected_item.id,order_id=order_id,count=int(message)):#убрать
+            try:
+                a=self.orders_fu(seller_id=selected_item.seller_id,status='Не отправленна')
+                a[0].total_price+=selected_item.price
+                print(1)
+            except:
+                self.create_order(selected_item.seller_id,self.admin_id,str(datetime.datetime.now().date()),'Не отправленна',selected_item.price)
         else:
             self.waring=warning_window('Выбранное количиство товара превышает доступный для покупки')
             self.waring.show()
@@ -219,6 +218,17 @@ class Admin_Cat(QWidget):
         self.filtr_window=add_window(self.communication)
         self.communication.signal.connect(self.add_to_order)
         self.filtr_window.show()
+
+    def which_order_should_I_make(self,item):
+
+        orders=self.orders_fu(status='Не отправленно')
+
+        for order in orders:
+            if order.seller_id==item.seller_id:
+                return order.id
+        orders_id=[i.id for i in orders]
+        return max(orders_id)+1 
+        #надо сделать что бы добавлялись
         
 class Filter_window(QWidget):
     
@@ -618,7 +628,6 @@ class Seller_Cat(QWidget):
         self.communication.signal.connect(self.add_to_order)
         self.add_window.show()
  
-
 class Change_window(QWidget):
     
     def __init__(self,select_fu,communication,save_fu,item_id):
@@ -689,7 +698,6 @@ class Change_window(QWidget):
 
         self.con.signal.emit('')
 
-
 class Seller_add_window(QWidget):
     
     def __init__(self,communication,create_item_fu,seller_id):
@@ -740,7 +748,6 @@ class Seller_add_window(QWidget):
     def add_item(self):
         self.create_item_fu(seller_id=self.seller_id,name=self.name_input.text(),price=self.price_input.text(),article=self.art_input.text(),count=self.count_input.text())
         self.con.signal.emit('')
-
 
 class Seller_orders_window(QWidget):
     def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,seller_id,join_fu):
@@ -823,8 +830,6 @@ class Seller_orders_window(QWidget):
     def go_to_order(self):
         self.selected_order_window=Selected_Sellers_order_window(items_fu=self.items_fu,orders_fu=self.orders_fu,users_fu=self.users_fu,order_items_fu=self.order_items_fu,add_fu=self.add_fu,del_fu=self.del_fu,number_of_order=self.id_select.text())
         self.selected_order_window.show()
-
-
 
 class Selected_Sellers_order_window(QWidget):
     def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,number_of_order):

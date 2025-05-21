@@ -102,6 +102,9 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
             selected_item.count-=count
             self.add(Order_Item(item_id=item_id,order_id=order_id,count=count))
             return True
+    def create_order(self,seller_id,admin_id,created_in,status,total_price):
+        self.add(Order(seller_id=seller_id,admin_id=admin_id,created_in=created_in,status=status,total_price=total_price))
+        return True
 
 
     def create_item(self,seller_id,name,article,price,count):
