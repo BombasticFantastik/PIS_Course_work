@@ -73,6 +73,18 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
         return selected_orders
     
     def get_order_items(self,id=None,item_id=None,order_id=None,cnt=None):
+        selected_order_items=self.session.query(Order_Item)#????
+        if id:
+            selected_order_items=selected_order_items.filter_by(id=id)
+        if item_id:
+            selected_order_items=selected_order_items.filter_by(item_id=item_id)
+        if order_id:
+            selected_order_items=selected_order_items.filter_by(order_id=order_id)
+        if cnt:
+            selected_order_items=selected_order_items.filter_by(count=cnt)
+        return selected_order_items
+    
+    def get_order_items_items_join(self,id=None,item_id=None,order_id=None,cnt=None):
         selected_order_items=self.session.query(Order_Item,Item)
         if id:
             selected_order_items=selected_order_items.filter_by(id=id)
@@ -82,19 +94,7 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
             selected_order_items=selected_order_items.filter_by(order_id=order_id)
         if cnt:
             selected_order_items=selected_order_items.filter_by(count=cnt)
-        selected_orders=selected_orders.join(Order_Item,Item.id==Order_Item.item_id)
-        return selected_order_items
-    
-    def get_order_items_items_join(self,id=None,item_id=None,order_id=None,cnt=None):
-        selected_order_items=self.session.query(Order_Item)
-        if id:
-            selected_order_items=selected_order_items.filter_by(id=id)
-        if item_id:
-            selected_order_items=selected_order_items.filter_by(item_id=item_id)
-        if order_id:
-            selected_order_items=selected_order_items.filter_by(order_id=order_id)
-        if cnt:
-            selected_order_items=selected_order_items.filter_by(count=cnt)
+        selected_order_items=selected_order_items.join(Order_Item,Item.id==Order_Item.item_id) 
         return selected_order_items
     
     
@@ -114,9 +114,18 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
         if selected_item.count<count:
             return False
         else:
-            selected_item.count-=count
-            self.add(Order_Item(item_id=item_id,order_id=order_id,count=count))
-            return True
+            for i in self.get_order_items(order_id=order_id):#проверка
+                print(i)
+                if i.item_id==selected_item.id:
+                    selected_item.count-=count
+                    i.count+=count
+                    print(1)
+                    return True
+                self.add(Order_Item(item_id=item_id,order_id=order_id,count=count))
+                print(0)
+                return True
+                
+
     def create_order(self,seller_id,admin_id,created_in,status,total_price):
         self.add(Order(seller_id=seller_id,admin_id=admin_id,created_in=created_in,status=status,total_price=total_price))
         return True

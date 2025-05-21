@@ -209,7 +209,7 @@ class Admin_Cat(QWidget):
                 a[0].total_price+=selected_item.price
                 
             except:
-                self.create_order(selected_item.seller_id,self.admin_id,str(datetime.datetime.now().date()),'Не отправленна',selected_item.price)
+                self.create_order(selected_item.seller_id,self.admin_id,str(datetime.datetime.now().date()),'Не отправленна',selected_item.price*selected_item.count)
         else:
             self.waring=warning_window('Выбранное количиство товара превышает доступный для покупки')
             self.waring.show()
@@ -481,23 +481,26 @@ class Selected_Order_window(QWidget):
         self.table.clear()
         self.table.setHorizontalHeaderLabels([
             'id',
-            'item_id',
-            'order_id',
+            'article',
+            'price',
             'count',
         ])
         
         if order_items==None:
             order_items_with_join=self.get_order_items_items_join(order_id=self.number_of_order)
-        for j,i in enumerate(order_items_with_join):
+            
+        costil=0
+        for i in order_items_with_join:
             id=QTableWidgetItem(str(i[0].id))
-            art=QTableWidgetItem(str(i[1].articl))
-            price=QTableWidgetItem(str(i[1].total_price))
+            art=QTableWidgetItem(str(i[1].article))
+            price=QTableWidgetItem(str(i[1].price))
             cnt=QTableWidgetItem(str(i[0].count))
             
-            self.table.setItem(j,0,id)
-            self.table.setItem(j,1,art)
-            self.table.setItem(j,2,price)
-            self.table.setItem(j,3,cnt)
+            self.table.setItem(costil,0,id)
+            self.table.setItem(costil,1,art)
+            self.table.setItem(costil,2,price)
+            self.table.setItem(costil,3,cnt)
+            costil+=1
     def remove_item(self):
         self.del_fu(self.order_items_fu(id=self.id_select.text())[0])
         self.fill()
@@ -620,11 +623,8 @@ class Seller_Cat(QWidget):
     def show_selected_order_window(self,message):
         self.filtr_window.close()
         
-        print(1)
-
-
     def show_orders_window(self,data):
-        self.order_window=Seller_orders_window(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu,self.seller_id,self.order_user_join)
+        self.order_window=Seller_orders_window(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu,self.seller_id,self.order_user_join,self.save_fu)
         self.order_window.show()
 
     #добавить товар
@@ -837,11 +837,11 @@ class Seller_orders_window(QWidget):
             self.table.setItem(costil,4,address)
             costil+=1
     def go_to_order(self):
-        self.selected_order_window=Selected_Sellers_order_window(items_fu=self.items_fu,orders_fu=self.orders_fu,users_fu=self.users_fu,order_items_fu=self.order_items_fu,add_fu=self.add_fu,del_fu=self.del_fu,number_of_order=self.id_select.text())
+        self.selected_order_window=Selected_Sellers_order_window(items_fu=self.items_fu,orders_fu=self.orders_fu,users_fu=self.users_fu,order_items_fu=self.order_items_fu,add_fu=self.add_fu,del_fu=self.del_fu,number_of_order=self.id_select.text(),save_fu=self.save_fu)
         self.selected_order_window.show()
 
 class Selected_Sellers_order_window(QWidget):
-    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,number_of_order):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,number_of_order,save_fu):
         self.items_fu=items_fu
         self.orders_fu=orders_fu
         self.users_fu=users_fu
@@ -849,6 +849,7 @@ class Selected_Sellers_order_window(QWidget):
         self.add_fu=add_fu
         self.del_fu=del_fu
         self.number_of_order=number_of_order
+        self.save_fu=save_fu
         
         super().__init__()
         
@@ -864,13 +865,8 @@ class Selected_Sellers_order_window(QWidget):
         self.table.setColumnCount(4)
         self.fill()#sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 
-        #left
-        self.id_select_label=QLabel('Введите Id')
-        self.id_select = QLineEdit()
         self.cancel_order_button=QPushButton('Отменить \n заказ',self)
         self.accept_order_button=QPushButton('Одобрить \n заказ',self)
-        self.id_select_label.setFixedSize(200,10)
-        self.id_select.setFixedSize(200,50)
         self.cancel_order_button.setFixedSize(200,100)
         self.accept_order_button.setFixedSize(200,100)
 
@@ -881,8 +877,6 @@ class Selected_Sellers_order_window(QWidget):
         
         #left_layout
         left_layout = QVBoxLayout()
-        left_layout.addWidget(self.id_select_label)
-        left_layout.addWidget(self.id_select)
         left_layout.addWidget(self.cancel_order_button)
         left_layout.addWidget(self.accept_order_button)
 
@@ -922,5 +916,6 @@ class Selected_Sellers_order_window(QWidget):
         self.del_fu(self.orders_fu(id=self.number_of_order)[0])
         self.close()
     def accept_order(self):
-        #self.get
-        pass
+        obj=self.orders_fu(id=self.number_of_order)[0]
+        obj.status='Одобренна'
+        self.save()
