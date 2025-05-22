@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 import datetime
 from sqlalchemy.orm import sessionmaker
 from Model.AlchFacade import AlchFacade
-from Model.classes import User,Order
+from Model.classes import Item
 from sqlalchemy.orm import declarative_base
 
 import yaml
@@ -20,14 +20,19 @@ session=Session()
 Fasade=AlchFacade(engine,session)
 
 def test_get_users():
-    assert type(Fasade.get_users()[0])==User
-    assert type(Fasade.get_users()[0].id)==int
-    assert Fasade.get_users()[0].status in ['Администратор','Поставщик']
-    assert type(Fasade.get_users()[0].registred_in)==datetime.date
-    assert type(Fasade.get_users()[0].login)==str
+    assert type(Fasade.get_items()[0])==Item
+    assert type(Fasade.get_items()[0].seller_id)==int
+    assert type(Fasade.get_items()[0].name)==str
 
 
-def test_order_user_join():#убрать в ордер
-    assert type(Fasade.order_user_join()[0][1])==User
-    assert type(Fasade.order_user_join()[0][0])==Order
-    assert type(Fasade.order_user_join()[0][1].login)==str
+def create_item():
+    Fasade.create_item(seller_id=999,name='Новый предмет',article=3333,price=1010,count=10)
+    item=Fasade.get_items(article=3333)[0]
+    assert type(item)==Item
+    assert item.seller_id==999
+    assert item.name=='Новый предмет'
+    assert item.article==3333
+    assert item.price==1010
+    assert item.count==10
+    Fasade.delete(item)
+    
