@@ -3,6 +3,8 @@
 class FacadeDB{
   --
   + add(Object object) => Object
+  + delete(Object object) => Object
+  + save(Object object) => Object
 }
  
 interface IUserDB {
@@ -39,7 +41,7 @@ class User {
   --
   + status: UserStatus
   + login: TEXT
-  + password_hash: TEXT
+  + password: TEXT
   + INN: INT
   + legal_entity: TEXT
   + adress: TEXT
@@ -47,45 +49,41 @@ class User {
 }
 
 enum UserStatus {
-  ADMIN
-  SELLER
+  Администратор
+  Поставщик
 }
  
 User *- UserStatus
- 
- 
 
- 
 class Item {
   * id: TEXT
   --
+  + seller_id: INT
   + name: TEXT
   + article: INT
   + price: NUMERIC
-  + created_at: DATETIME
+  + count: DATETIME
 }
  
 class Order {
   * id: TEXT
   --
-  + user_id: TEXT
-  + total_price: NUMERIC
-  + final_price: NUMERIC
+  + seller_id: TEXT
+  + admin_id: TEXT
+  + created_in: DATETIME
   + status: OrderStatus
-  + created_at: DATETIME
+  + total_price: NUMERIC
+  
 }
  
 enum OrderStatus {
-  WAITING
-  COMPLITING
-  COMPLETED
-  CANCELLED
+  Не отправленна
+  Одобренна
+  Доставленна
+  Отмененна
 }
  
-Order *- OrderStatus
- 
-' WINDOWS
- 
+Order *- OrderStatus 
 package "Item Windows" {
 SellerWindowItemList o--> IItemDB
 AdminWindowItemList o--> IItemDB

@@ -119,10 +119,8 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
                 if i.item_id==selected_item.id:
                     selected_item.count-=count
                     i.count+=count
-                    print(1)
                     return True
                 self.add(Order_Item(item_id=item_id,order_id=order_id,count=count))
-                print(0)
                 return True
                 
 

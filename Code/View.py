@@ -585,7 +585,7 @@ class Seller_Cat(QWidget):
             'count',
         ])
         if items==None:
-            items=self.items_fu()
+            items=self.items_fu(seller_id=self.seller_id)
         costil=0
         for i in items:
 
@@ -759,7 +759,7 @@ class Seller_add_window(QWidget):
         self.con.signal.emit('')
 
 class Seller_orders_window(QWidget):
-    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,seller_id,join_fu):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,seller_id,join_fu,save_fu):
         self.items_fu=items_fu
         self.orders_fu=orders_fu
         self.users_fu=users_fu
@@ -768,6 +768,7 @@ class Seller_orders_window(QWidget):
         self.del_fu=del_fu
         self.seller_id=seller_id
         self.join_fu=join_fu
+        self.save_fu=save_fu
         
         super().__init__()
         
