@@ -30,7 +30,7 @@ class Item(Base):
 class User(Base):
     __tablename__='users'
     id=Column(Integer,primary_key=True)
-    Status=Column(String)
+    status=Column(String)
     login=Column(String)
     password=Column(String)
     INN=Column(BigInteger)

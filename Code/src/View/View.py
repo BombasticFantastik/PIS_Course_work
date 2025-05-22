@@ -1,8 +1,6 @@
-import sys
 from PyQt6.QtCore import pyqtSignal, QObject
 import datetime
 from PyQt6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout,QLineEdit,QTableWidget,QTableWidgetItem
-#from sqlalchemy import create_engine,Column,Integer,String,Float,Table,MetaData,insert,delete,update,text
 class Communicate(QObject):
         signal = pyqtSignal(str)
 
@@ -61,9 +59,9 @@ class Login_window(QWidget):
         selected_user=self.users_fu(login=self.login_input.text(),password=self.password_input.text())
         
         if selected_user[0].login==self.login_input.text() and selected_user[0].password==self.password_input.text():
-            print(selected_user[0].Status)
+            print(selected_user[0].status)
             #Админ
-            if selected_user[0].Status=='Администратор':#??????????? как я мог себе это позволить ?
+            if selected_user[0].status=='Администратор':#??????????? как я мог себе это позволить ?
                 self.admin_cat_window=Admin_Cat(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu,self.create_order_item_fu,selected_user[0].id,self.create_order,self.get_order_items_items_join)
                 self.admin_cat_window.show()
                 self.close()
@@ -791,7 +789,6 @@ class Seller_orders_window(QWidget):
         self.id_select_label.setFixedSize(250,15)
         self.id_select.setFixedSize(200,50)
         self.go_to_order_button.setFixedSize(200,100)
-
         
         #left_layout
         left_layout = QVBoxLayout()

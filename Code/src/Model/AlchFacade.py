@@ -1,5 +1,5 @@
-from Interfaces import IItemDB,IOrderDB,IUserDB
-from classes import Item,User,Order,Order_Item
+from Model.Interfaces import IItemDB,IOrderDB,IUserDB
+from Model.classes import Item,User,Order,Order_Item
 
 class AlchFacade(IItemDB,IOrderDB,IUserDB):
     def __init__(self,engine,session):
@@ -97,8 +97,6 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
         selected_order_items=selected_order_items.join(Order_Item,Item.id==Order_Item.item_id) 
         return selected_order_items
     
-    
-
     def add(self,object):
         self.session.add(object)
         self.save()
@@ -133,6 +131,3 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
         self.add(Item(seller_id=seller_id,name=name,article=article,price=price,count=count))
     
     
-
-    # def cancel_changes(self):
-    #     self.session.rollback()
