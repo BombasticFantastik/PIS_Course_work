@@ -62,7 +62,7 @@ class Login_window(QWidget):
             print(selected_user[0].status)
             #Админ
             if selected_user[0].status=='Администратор':#??????????? как я мог себе это позволить ?
-                self.admin_cat_window=Admin_Cat(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu,self.create_order_item_fu,selected_user[0].id,self.create_order,self.get_order_items_items_join)
+                self.admin_cat_window=Admin_Cat(self.items_fu,self.orders_fu,self.users_fu,self.order_items_fu,self.add_fu,self.del_fu,self.create_order_item_fu,selected_user[0].id,self.create_order,self.get_order_items_items_join,self.save_fu)
                 self.admin_cat_window.show()
                 self.close()
             #Поставщик
@@ -75,7 +75,7 @@ class Login_window(QWidget):
             pass
         
 class Admin_Cat(QWidget):
-    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu,admin_id,create_order,get_order_items_items_join):
+    def __init__(self,items_fu,orders_fu,users_fu,order_items_fu,add_fu,del_fu,create_order_item_fu,admin_id,create_order,get_order_items_items_join,save_fu):
         self.items_fu=items_fu
         self.orders_fu=orders_fu
         self.users_fu=users_fu
@@ -87,6 +87,7 @@ class Admin_Cat(QWidget):
         self.admin_id=admin_id
         self.create_order=create_order
         self.get_order_items_items_join=get_order_items_items_join
+        self.save_fu=save_fu
         super().__init__()
         self.setWindowTitle("Главное окно администратора")
         self.filtr_window = None
@@ -201,13 +202,20 @@ class Admin_Cat(QWidget):
         selected_item=self.items_fu(id=self.id_select.text())
         selected_item=selected_item[0]
         order_id=self.which_order_should_I_make(selected_item)
+        
         if self.create_order_item_fu(item_id=selected_item.id,order_id=order_id,count=int(message)):#убрать
+            selected_item.count-=int(message)
+            
             try:
+                
                 a=self.orders_fu(seller_id=selected_item.seller_id,status='Не отправленна')
                 a[0].total_price+=selected_item.price
-                
             except:
-                self.create_order(selected_item.seller_id,self.admin_id,str(datetime.datetime.now().date()),'Не отправленна',selected_item.price*selected_item.count)
+                
+                
+                #print(order_id)
+                self.create_order_item_fu(selected_item.id,order_id,int(message))
+                self.create_order(selected_item.seller_id,self.admin_id,str(datetime.datetime.now().date()),'Не отправленна',selected_item.price*int(message))
         else:
             self.waring=warning_window('Выбранное количиство товара превышает доступный для покупки')
             self.waring.show()
@@ -504,6 +512,8 @@ class Selected_Order_window(QWidget):
         self.fill()
     def cancel_order(self):
         self.del_fu(self.orders_fu(id=self.number_of_order)[0])
+        for order in self.order_items_fu(order_id=self.number_of_order):
+            self.del_fu(order)
         self.close()
     def accept_order(self):
         pass
