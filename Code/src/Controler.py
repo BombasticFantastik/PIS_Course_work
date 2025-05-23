@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-import psycopg2
+#import psycopg2
 import abc
 from View.View import Admin_Cat,Filter_window,Admin_Orders_window,Selected_Order_window,add_window,Login_window,Seller_orders_window
 import sys

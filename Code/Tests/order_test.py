@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 import datetime
 from sqlalchemy.orm import sessionmaker
 from Model.AlchFacade import AlchFacade
-from Model.classes import Order
+from Model.classes import Order,User
 from sqlalchemy.orm import declarative_base
 
 import yaml
@@ -18,23 +18,6 @@ engine.connect()
 Session=sessionmaker(bind=engine)
 session=Session()
 Fasade=AlchFacade(engine,session)
-
-# def test_get_users():
-#     assert type(Fasade.get_items()[0])==Item
-#     assert type(Fasade.get_items()[0].seller_id)==int
-#     assert type(Fasade.get_items()[0].name)==str
-
-
-# def create_item():
-#     Fasade.create_item(seller_id=999,name='Новый предмет',article=3333,price=1010,count=10)
-#     item=Fasade.get_items(article=3333)[0]
-#     assert type(item)==Item
-#     assert item.seller_id==999
-#     assert item.name=='Новый предмет'
-#     assert item.article==3333
-#     assert item.price==1010
-#     assert item.count==10
-#     Fasade.delete(item)
     
 def test_get_orders():
     item=Order(id=999,seller_id=999,admin_id=999,created_in='03-03-2020',status='Не отправленна',total_price=3000)
@@ -46,15 +29,14 @@ def test_get_orders():
     assert len(list(Fasade.get_orders(id=-12301)))==0
     Fasade.delete(item)
     
-    
+def test_create_create_order():
+    Fasade.create_order(seller_id=999,admin_id=999,created_in='03-03-2020',status='Не отправленна',total_price=3000)
+    item=Fasade.get_orders(seller_id=999,admin_id=999)[0]
+    assert type(item)==Order
+    assert item.status=='Не отправленна'
+    Fasade.delete(item)
 
-# def create_ite2m():
-#     Fasade.create_item(seller_id=999,name='Новый предмет',article=3333,price=1010,count=10)
-#     item=Fasade.get_items(article=3333)[0]
-#     assert type(item)==Item
-#     assert item.seller_id==999
-#     assert item.name=='Новый предмет'
-#     assert item.article==3333
-#     assert item.price==1010
-#     assert item.count==10
-#     Fasade.delete(item)
+def test_order_user_join():
+    assert type(Fasade.order_user_join()[0][1])==User
+    assert type(Fasade.order_user_join()[0][0])==Order
+    

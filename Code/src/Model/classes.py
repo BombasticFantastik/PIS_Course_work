@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine,Column,Integer,String,Float,Date,BigInteger
-import psycopg2
-import abc
+#import psycopg2
+#import abc
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 import yaml
