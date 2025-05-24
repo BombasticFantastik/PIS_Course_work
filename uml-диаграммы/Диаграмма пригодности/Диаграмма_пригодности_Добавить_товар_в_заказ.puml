@@ -15,6 +15,8 @@ boundary "Всплывающее окно заказа" as admin_selected_order
 
 control "Выбрать количество товара" as choose_count
 
+control "Создать заказ соответсвующему поставщику" as get_order
+
 entity "Фасад БД" as facade_bd
 
 admin -- admin_order_list
@@ -39,6 +41,8 @@ add_to_order -- admin_selected_order
 
 admin_selected_order--choose_count
 
-choose_count--facade_bd
+choose_count--get_order
+
+get_order--facade_bd
 
 @enduml

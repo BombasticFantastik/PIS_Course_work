@@ -18,6 +18,7 @@ Admin -> item_list : Добавление товара \n в заказ
 
 Admin ->count_window:Выбрать количество товара
 item_list->facade : addItemToList(Item item)
+facade -> facade : Создать заказ \n соответсвующему \n поставщику
 item_list -> item_list : Отобразить информацию \n о товаре
 
 @enduml
