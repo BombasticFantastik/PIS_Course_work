@@ -205,17 +205,13 @@ class Admin_Cat(QWidget):
         
         if self.create_order_item_fu(item_id=selected_item.id,order_id=order_id,count=int(message)):#убрать
             selected_item.count-=int(message)
-            
-            try:
-                
+            try:    
                 a=self.orders_fu(seller_id=selected_item.seller_id,status='Не отправленна')
-                a[0].total_price+=selected_item.price
+                a[0].total_price+=selected_item.price*int(message)
             except:
-                
-                
                 #print(order_id)
-                self.create_order_item_fu(selected_item.id,order_id,int(message))
                 self.create_order(selected_item.seller_id,self.admin_id,str(datetime.datetime.now().date()),'Не отправленна',selected_item.price*int(message))
+                #self.create_order_item_fu(selected_item.id,order_id,int(message))
         else:
             self.waring=warning_window('Выбранное количиство товара превышает доступный для покупки')
             self.waring.show()
@@ -233,8 +229,9 @@ class Admin_Cat(QWidget):
 
         for order in orders:
             if order.seller_id==item.seller_id:
+                print(order.id)
                 return order.id
-        orders_id=[i.id for i in orders]
+        orders_id=[i.id for i in self.orders_fu()]
         if len(list(orders))==0:
             orders_id.append(0)
         return max(orders_id)+1 
@@ -511,7 +508,11 @@ class Selected_Order_window(QWidget):
         self.del_fu(self.order_items_fu(id=self.id_select.text())[0])
         self.fill()
     def cancel_order(self):
-        self.del_fu(self.orders_fu(id=self.number_of_order)[0])
+        # self.del_fu(self.orders_fu(id=self.number_of_order)[0])
+        # for order in self.order_items_fu(order_id=self.number_of_order):
+        #     self.del_fu(order)
+        # self.close()
+        self.orders_fu(id=self.number_of_order)[0].status='Отменён'
         for order in self.order_items_fu(order_id=self.number_of_order):
             self.del_fu(order)
         self.close()

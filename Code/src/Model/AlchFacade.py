@@ -112,16 +112,13 @@ class AlchFacade(IItemDB,IOrderDB,IUserDB):
         if selected_item.count<count:
             return False
         else:
-            if len(order_id=order_id,item_id=item_id)>0:
-                i.count+=count
+            if len(list(self.get_order_items(order_id=order_id,item_id=item_id)))>0:
+                self.get_order_items(order_id=order_id,item_id=item_id)[0].count+=count
                 self.save()
                 return True
-                #if i.item_id==selected_item.id:
-                    #selected_item.count-=count
-                    
-                    
-            self.add(Order_Item(item_id=item_id,order_id=order_id,count=count))
-            return True
+            else:    
+                self.add(Order_Item(item_id=item_id,order_id=order_id,count=count))
+                return True
                 
 
     def create_order(self,seller_id,admin_id,created_in,status,total_price):
